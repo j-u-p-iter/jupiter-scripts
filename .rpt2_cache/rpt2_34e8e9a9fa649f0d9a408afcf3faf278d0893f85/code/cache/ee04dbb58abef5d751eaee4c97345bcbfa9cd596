@@ -1,0 +1,1 @@
+{"map":"{\"version\":3,\"file\":\"index.js\",\"sourceRoot\":\"\",\"sources\":[\"../../lib/index.ts\"],\"names\":[],\"mappings\":\"AACA,OAAO,CAAC,iBAAiB,CAAC,CAAA\"}","code":"require('./script-runner');\r\n//# sourceMappingURL=index.js.map","dts":{"name":"/Users/kirillleontev/Sites/scripts/index.d.ts","writeByteOrderMark":false,"text":"export {};\r\n"}}
