@@ -1,1 +1,0 @@
-{"map":"{\"version\":3,\"file\":\"index.js\",\"sourceRoot\":\"\",\"sources\":[\"../../lib/index.ts\"],\"names\":[],\"mappings\":\";AAAA,OAAO,CAAC,2BAA2B,CAAC,CAAC;AACrC,OAAO,CAAC,iBAAiB,CAAC,CAAA\"}","code":"\"use strict\";\r\nrequire('./node-version-middleware');\r\nrequire('./script-runner');\r\n//# sourceMappingURL=index.js.map"}
