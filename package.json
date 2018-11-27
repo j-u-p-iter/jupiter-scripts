@@ -10,8 +10,8 @@
     "jupiter-scripts": "dist/index.js"
   },
   "scripts": {
-    "build": "ts-node lib build",
-    "lint": "ts-node lib lint"
+    "build": "node src rollup",
+    "lint": "node src lint"
   },
   "repository": {
     "type": "git",
@@ -47,6 +47,8 @@
     "rollup": "^0.65.2",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-preserve-shebang": "^0.1.6",
     "rollup-plugin-typescript2": "^0.18.0",
