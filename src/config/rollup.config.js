@@ -18,6 +18,7 @@ const TYPESCRIPT_CONFIG_NAME = 'tsconfig.json'
 
 const buildMinify = parseEnv('BUILD_MINIFY', false)
 const buildFormat = parseEnv('BUILD_FORMAT', false)
+const buildCLI = parseEnv('BUILD_CLI', false)
 
 const useBuiltInTypeScriptConfig = !hasFile(TYPESCRIPT_CONFIG_NAME)
 
@@ -30,7 +31,7 @@ const generateOutput = () =>({
   // not to make things complicated - we add
   // this key for modules of all formats
   name: getModuleName(buildFormat, buildMinify),
-  banner: '#!/usr/bin/env node',
+  banner: buildCLI ? '#!/usr/bin/env node' : '',
 });
 
 module.exports = {

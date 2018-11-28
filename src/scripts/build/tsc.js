@@ -8,7 +8,7 @@ const {
   fromRoot,
   resolveBin,
   handleSpawnSignal,
-} = require('../utils')
+} = require('../../utils')
 
 const args = process.argv.slice(2);
 const here = p => path.join(__dirname, p);
@@ -23,7 +23,7 @@ const here = p => path.join(__dirname, p);
 const useBuiltinConfig =
   !args.includes('-p') && !args.includes('--project') && !hasFile('tsconfig.json');
 
-const tsconfig = useBuiltinConfig ? ['--project', here('../../config/tsconfig.json')] : [];
+const tsconfig = useBuiltinConfig ? ['--project', here('../../../config/tsconfig.json')] : [];
 
 const { signal, status: statusResult } = spawn.sync(
   resolveBin('tsc'),

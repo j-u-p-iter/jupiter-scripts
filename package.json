@@ -10,7 +10,7 @@
     "jupiter-scripts": "dist/index.js"
   },
   "scripts": {
-    "build": "node src rollup",
+    "build": "node src build",
     "lint": "node src lint"
   },
   "repository": {
