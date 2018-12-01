@@ -9,7 +9,7 @@ const fs = require('fs')
 const path = require('path')
 const readPkgUp = require('read-pkg-up')
 const arrify = require('arrify')
-const { has, curry, pick, keys, isArray } = require('lodash')
+const { has, curry, get, keys, isArray } = require('lodash')
 const which = require('which')
 
 const POSSIBLE_MODULES_FORMATS = ['main', 'module', 'umd:main'];
@@ -17,27 +17,27 @@ const POSSIBLE_MODULES_FORMATS = ['main', 'module', 'umd:main'];
 
 const { pkg: packageData, path: pkgPath } = readPkgUp.sync()
 
-const modulesFormats = (modulesToBuild: string[]) =>
-  pick(packageData, POSSIBLE_MODULES_FORMATS).map((scriptName: string) => scriptName.split('.').reverse()[1]);
+const modulesFormats = (modulesToBuild) =>
+  pick(packageData, POSSIBLE_MODULES_FORMATS).map((scriptName) => scriptName.split('.').reverse()[1]);
 
-const getModuleName = (moduleFormat: string, minify: boolean = true) => `jupiter-scripts.${moduleFormat}${minify ? '.min.js': '.js'}`;
+const getModuleName = (moduleFormat, minify) => `${packageData.name}.${moduleFormat}${minify ? '.min.js': '.js'}`;
 
-const getModulePath = (moduleFormat: string, minify: boolean = true) => `dist/lib/${getModuleName(moduleFormat)}`
+const getModulePath = (moduleFormat, minify) => `dist/lib/${getModuleName(moduleFormat, minify)}`
 
 const appDirectory = path.dirname(pkgPath)
 
-const fromRoot = (...p: string[]) => path.join(appDirectory, ...p)
+const fromRoot = (...p) => path.join(appDirectory, ...p)
 
-const hasFile = (...p: string[]) => fs.existsSync(fromRoot(...p))
+const hasFile = (...p) => fs.existsSync(fromRoot(...p))
 
-const hasPkgProp = (props: string[] | string) => arrify(props).some((prop: string) => has(packageData, prop))
+const hasPkgProp = props => arrify(props).some((prop) => has(packageData, prop))
 
 const hasPkgSubProp = curry(
-  (pkgProp: string, subProps: string[]) =>
-    hasPkgProp(arrify(subProps).map((subProp: string) => `${pkgProp}.${subProp}`))
+  (pkgProp, subProps) =>
+    hasPkgProp(arrify(subProps).map(subProp => `${pkgProp}.${subProp}`))
 )
 
-const ifHasPkgSubProp = (pkgProp: string) => (subProps: string[], resultOnTrue: any, resultOnFalse: any) =>
+const ifHasPkgSubProp = pkgProp => (subProps, resultOnTrue, resultOnFalse) =>
   hasPkgSubProp(pkgProp, subProps) ? resultOnTrue : resultOnFalse
 
 const hasScript = hasPkgSubProp('scripts')
@@ -45,19 +45,19 @@ const hasScript = hasPkgSubProp('scripts')
 const hasPeerDependency = hasPkgSubProp('peerDependencies')
 const hasDependency = hasPkgSubProp('dependencies')
 const hasDevelopmentDependency = hasPkgSubProp('devDependencies')
-const hasAnyDependency = (dependencies: string[]) => [
+const hasAnyDependency = dependencies => [
   hasPeerDependency,
   hasDependency,
   hasDevelopmentDependency,
 ].some(method => method(dependencies))
 
-const ifHasAnyDependency = (dependencies: string[], resultOnTrue: any, resultOnFalse: any) =>
+const ifHasAnyDependency = (dependencies, resultOnTrue, resultOnFalse) =>
   hasAnyDependency(dependencies) ? resultOnTrue : resultOnFalse
 
-const parseEnv = (name: string, defaultEnvValue: string): any => {
+const parseEnv = (name, defaultEnvValue) => {
   if (isEnvSet(name)) {
     try {
-      return JSON.parse(process.env[name]!)
+      return JSON.parse(process.env[name])
     } catch(error) {
       return process.env[name]
     }
@@ -66,7 +66,7 @@ const parseEnv = (name: string, defaultEnvValue: string): any => {
   return defaultEnvValue
 }
 
-const isEnvSet = (name: string) => {
+const isEnvSet = name => {
   return (
     process.env.hasOwnProperty(name) &&
     process.env[name] &&
@@ -74,7 +74,7 @@ const isEnvSet = (name: string) => {
   )
 }
 
-const withDefault = curry((defaultValue: any, data: any) => {
+const withDefault = curry((defaultValue, data) => {
   let notEmpty = !!data;
 
   if (isArray(data)) { notEmpty = !!data.length }
@@ -87,23 +87,21 @@ const withObjectByDefault = withDefault({});
 // For umd we need to have dependencies included in bundle,
 // Cause we don't have the ability to install dependencies
 // With npm and package.json for such modules
-const generateExternals = (moduleFormat: string) => (
+const generateExternals = (moduleFormat) => (
   moduleFormat === 'umd'
     ? withObjectByDefault(
         keys(
-          pick(packageData, 'peerDependencies')
+          get(packageData, 'peerDependencies')
         )
       )
     : withObjectByDefault(
-        keys(
-          keys(pick(packageData, 'dependencies')).concat(
-            pick(packageData, 'peerDependencies')
-          )
+        keys(get(packageData, 'dependencies')).concat(
+          keys(get(packageData, 'peerDependencies'))
         )
       )
 );
 
-const resolveBin = (moduleName: string, { executable = moduleName } = {}) => {
+const resolveBin = (moduleName, { executable = moduleName } = {}) => {
   let pathToBinFoundWithWhich;
 
   try {
@@ -126,7 +124,6 @@ const resolveBin = (moduleName: string, { executable = moduleName } = {}) => {
       return executable;
     }
 
-    console.log(fullBinPath)
     return fullBinPath
   } catch(error) {
     if (pathToBinFoundWithWhich) {
@@ -137,7 +134,7 @@ const resolveBin = (moduleName: string, { executable = moduleName } = {}) => {
   }
 }
 
-const handleSpawnSignal = (scriptName: string, signal: string) => {
+const handleSpawnSignal = (scriptName, signal) => {
   if (signal === 'SIGKILL') {
     console.log(
       `The script "${scriptName}" failed because the process exited too early. ` +

@@ -24,7 +24,7 @@ function spawnScript() {
     throw new Error(`Unknown script "${scriptName}"`)
   }
 
-  const { signal, status } = spawn.sync('ts-node', [mainScriptPath, ...args], {
+  const { signal, status } = spawn.sync(executor, [mainScriptPath, ...args], {
     stdio: 'inherit',
   })
 
@@ -35,7 +35,7 @@ function spawnScript() {
   }
 }
 
-function attemptToResolve(path: string) {
+function attemptToResolve(path) {
   try {
     return require.resolve(path)
   } catch(error) {
@@ -43,18 +43,19 @@ function attemptToResolve(path: string) {
   }
 }
 
-export const runScript = () => {
+const runScript = () => {
   if (scriptName) {
     spawnScript()
   } else {
     const scriptsPath = path.join(__dirname, 'scripts/')
-    const availableScripts: string[] = glob.sync(path.join(__dirname, 'scripts', '*'))
+    const availableScripts = glob.sync(path.join(__dirname, 'scripts', '*'))
 
     const availableScriptsMessage = availableScripts
       .map(
         script => script
           .replace('__tests__', '')
           .replace(scriptsPath, '')
+          .replace('.ts', '')
       )
       .filter(Boolean)
       .join('\n ')
@@ -71,3 +72,7 @@ export const runScript = () => {
     process.exit(0)
   }
 }
+
+module.exports = {
+  runScript
+};

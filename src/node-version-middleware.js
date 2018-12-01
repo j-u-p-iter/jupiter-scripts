@@ -24,4 +24,4 @@ const checkNodeVersion = () => {
   }
 }
 
-export { checkNodeVersion };
+module.exports = { checkNodeVersion };
