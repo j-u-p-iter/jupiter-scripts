@@ -23,11 +23,19 @@ const buildCLI = args.includes('--cli');
 
 const useBuiltinConfig = !args.includes('--config') && !hasFile('rollup.config.js')
 
+// ## Options we pass to bin start
+
 // set up builtin config or don't setup --config option
 // in this case package config will be used
 const config = useBuiltinConfig ? `--config ${here('../../config/rollup.config.js')}` : ''
 
-const getScript = env => [env, pathToRollupBin, config].filter(Boolean).join(' ')
+const watch = parsedArgs.watch ? '--watch' : '';
+
+const rollupOptions = [config, watch];
+
+// ## Options we pass to bin end
+
+const getScript = env => [env, pathToRollupBin, ...rollupOptions].filter(Boolean).join(' ')
 
 const getScripts = () => (
   formats.map(format => {
