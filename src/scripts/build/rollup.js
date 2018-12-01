@@ -10,9 +10,9 @@ const args = process.argv.slice(2)
 const parsedArgs = yargsParser(args)
 const here = (...props) => path.join(__dirname, ...props)
 
-const formats = typeof parsedArgs.build === 'string'
-  ? parsedArgs.build.split(',').map(format => format.trim())
-  : ['esm', 'cjs'];
+const formats = typeof parsedArgs.bundle === 'string'
+  ? parsedArgs.bundle.split(',').map(format => format.trim())
+  : ['esm', 'cjs', 'umd.min'];
 
 const cleanBundleDir = !args.includes('--no-clean')
 if (cleanBundleDir) {

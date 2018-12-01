@@ -4,6 +4,7 @@ const rollupCommonJS = require('rollup-plugin-commonjs')
 const rollupNodeResolve = require('rollup-plugin-node-resolve')
 const rollupJSON = require('rollup-plugin-json');
 const rollupNodeBuiltins = require('rollup-plugin-node-builtins');
+const tempDir = require('temp-dir');
 
 const {
   parseEnv,
@@ -35,13 +36,19 @@ const generateOutput = () =>({
 });
 
 module.exports = {
-  input: 'src/index.js',
+  input: 'src/index.ts',
   output: generateOutput(),
   external: generateExternals(),
   plugins: [
     rollupJSON(),
     rollupTypeScript({
       tsconfig: pathToTsConfig,
+      // https://github.com/developit/microbundle/issues/169
+      // https://github.com/developit/microbundle/pull/204
+      // https://github.com/ezolenko/rollup-plugin-typescript2 ctrl+f `cacheRoot`
+      cacheRoot: `${tempDir}/.rts2_cache_${buildFormat}`,
+      exclude: ['**/__tests__/*'],
+      useTsconfigDeclarationDir: true,
     }),
     rollupCommonJS(),
     rollupNodeResolve(),

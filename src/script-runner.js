@@ -24,7 +24,7 @@ function spawnScript() {
     throw new Error(`Unknown script "${scriptName}"`)
   }
 
-  const { signal, status } = spawn.sync('ts-node', [mainScriptPath, ...args], {
+  const { signal, status } = spawn.sync(executor, [mainScriptPath, ...args], {
     stdio: 'inherit',
   })
 

@@ -23,7 +23,9 @@ const here = p => path.join(__dirname, p);
 const useBuiltinConfig =
   !args.includes('-p') && !args.includes('--project') && !hasFile('tsconfig.json');
 
-const tsconfig = useBuiltinConfig ? ['--project', here('../../../config/tsconfig.json')] : [];
+const tsconfig = useBuiltinConfig ? ['--project', here('../../config/tsconfig.json')] : [];
+
+rimraf.sync(fromRoot('dist'));
 
 const { signal, status: statusResult } = spawn.sync(
   resolveBin('tsc'),
@@ -31,6 +33,8 @@ const { signal, status: statusResult } = spawn.sync(
   { stdio: 'inherit' },
 );
 
-handleSpawnSignal(signal);
-
-process.exit(statusResult);
+if (signal) {
+  handleSpawnSignal('build', signal);
+} else {
+  process.exit(statusResult);
+}
