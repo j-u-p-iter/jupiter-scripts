@@ -7,7 +7,7 @@
     "npm": ">=5"
   },
   "bin": {
-    "jupiter-scripts": "dist/index.js"
+    "jupiter-scripts": "jupiter-scripts.cjs.js"
   },
   "scripts": {
     "build": "node src build",
