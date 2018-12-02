@@ -23,7 +23,7 @@ const buildCLI = parseEnv('BUILD_CLI', false)
 
 const useBuiltInTypeScriptConfig = !hasFile(TYPESCRIPT_CONFIG_NAME)
 
-const pathToTsConfig = useBuiltInTypeScriptConfig ? `./src/config/${TYPESCRIPT_CONFIG_NAME}` : fromRoot(TYPESCRIPT_CONFIG_NAME)
+const pathToTsConfig = useBuiltInTypeScriptConfig ? path.resolve(__dirname, `../../${TYPESCRIPT_CONFIG_NAME}`) : fromRoot(TYPESCRIPT_CONFIG_NAME)
 
 const generateOutput = () =>({
   file: getModulePath(buildFormat, buildMinify),
