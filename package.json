@@ -7,10 +7,10 @@
     "npm": ">=5"
   },
   "bin": {
-    "jupiter-scripts": "dist/lib/src/index.js"
+    "jupiter-scripts": "dist/lib/index.js"
   },
   "scripts": {
-    "build": "node src build --cli",
+    "build": "node src build --cli --outDir ../../dist/lib --include ../../src",
     "lint": "node src lint",
     "test": "node src test"
   },
@@ -42,6 +42,7 @@
     "browserslist": "^4.1.1",
     "concurrently": "^4.0.1",
     "cross-spawn": "^6.0.5",
+    "edit-json-file": "^1.2.0",
     "glob": "^7.1.3",
     "is-ci": "^1.2.1",
     "jest": "^23.6.0",

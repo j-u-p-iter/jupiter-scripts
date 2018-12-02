@@ -1,11 +1,12 @@
 // to include tsconfig.json into dist folder
 // resolveJsonModule in tsconfig.json should be enabled
-require('../../../tsconfig.json')
+require('../../config/tsconfig.json')
 
 const path = require('path')
 const spawn = require('cross-spawn')
 const rimraf = require('rimraf')
-const { flatten } = require('lodash')
+const yargsParser = require('yargs-parser')
+const editJsonFile = require('edit-json-file');
 
 const {
   hasFile,
@@ -15,7 +16,8 @@ const {
   handleSpawnSignal,
 } = require('../../utils')
 
-const args = process.argv.slice(2);
+const args = process.argv.slice(2)
+const { outDir, include } = yargsParser(args)
 const here = p => path.join(__dirname, p);
 
 // So, there're several ways to set configs for babel bin:
@@ -28,9 +30,20 @@ const here = p => path.join(__dirname, p);
 const useBuiltinConfig =
   !args.includes('-p') && !args.includes('--project') && !hasFile('tsconfig.json');
 
-const tsconfig = useBuiltinConfig ? ['--project', require.resolve('../../../tsconfig.json'), '--outDir', 'dist/lib', '--rootDir', 'src'] : [];
+const pathToConfig = path.resolve(__dirname, '../../config/tsconfig.json');
+
+if (useBuiltinConfig) {
+  const config = editJsonFile(pathToConfig);
+
+  config.set('compilerOptions.outDir', outDir || fromRoot('dist/lib'))
+  config.set('include', include ? [include] : [fromRoot('src')])
+  config.save()
+}
+
+const tsconfig = useBuiltinConfig ? ['--project', pathToConfig] : [];
 
 rimraf.sync(fromRoot('dist'));
+
 
 const { signal, status: statusResult } = spawn.sync(
   resolveBin('tsc'),

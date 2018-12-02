@@ -5,6 +5,7 @@ const rollupNodeResolve = require('rollup-plugin-node-resolve')
 const rollupJSON = require('rollup-plugin-json');
 const rollupNodeBuiltins = require('rollup-plugin-node-builtins');
 const tempDir = require('temp-dir');
+const editJsonFile = require('edit-json-file');
 
 const {
   parseEnv,
@@ -15,15 +16,10 @@ const {
   generateExternals,
 } = require('../utils');
 
-const TYPESCRIPT_CONFIG_NAME = 'tsconfig.json'
-
 const buildMinify = parseEnv('BUILD_MINIFY', false)
 const buildFormat = parseEnv('BUILD_FORMAT', false)
 const buildCLI = parseEnv('BUILD_CLI', false)
-
-const useBuiltInTypeScriptConfig = !hasFile(TYPESCRIPT_CONFIG_NAME)
-
-const pathToTsConfig = useBuiltInTypeScriptConfig ? path.resolve(__dirname, `../../${TYPESCRIPT_CONFIG_NAME}`) : fromRoot(TYPESCRIPT_CONFIG_NAME)
+const pathToTsConfig = parseEnv('PATH_TO_TS_CONFIG');
 
 const generateOutput = () =>({
   file: getModulePath(buildFormat, buildMinify),

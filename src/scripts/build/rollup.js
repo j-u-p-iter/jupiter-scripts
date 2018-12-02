@@ -2,16 +2,18 @@ const path = require('path')
 const spawn = require('cross-spawn')
 const yargsParser = require('yargs-parser')
 const rimraf = require('rimraf')
+const editJsonFile = require('edit-json-file');
 
 const { handleSpawnSignal, resolveBin, hasFile, fromRoot } = require('../../utils')
 
+const TYPESCRIPT_CONFIG_NAME = 'tsconfig.json'
 const pathToRollupBin = resolveBin('rollup')
 const args = process.argv.slice(2)
-const parsedArgs = yargsParser(args)
+const { bundle, watch: parsedWatch, outDir, include } = yargsParser(args)
 const here = (...props) => path.join(__dirname, ...props)
 
-const formats = typeof parsedArgs.bundle === 'string'
-  ? parsedArgs.bundle.split(',').map(format => format.trim())
+const formats = typeof bundle === 'string'
+  ? bundle.split(',').map(format => format.trim())
   : ['esm', 'cjs', 'umd.min'];
 
 const cleanBundleDir = !args.includes('--no-clean')
@@ -21,7 +23,20 @@ if (cleanBundleDir) {
 
 const buildCLI = args.includes('--cli');
 
+const useBuiltInTypeScriptConfig = !hasFile(TYPESCRIPT_CONFIG_NAME)
+
+const pathToTsConfig = useBuiltInTypeScriptConfig ? path.resolve(__dirname, `../../config/${TYPESCRIPT_CONFIG_NAME}`) : fromRoot(TYPESCRIPT_CONFIG_NAME)
+
+if (useBuiltInTypeScriptConfig) {
+  const config = editJsonFile(pathToTsConfig);
+
+  config.set('compilerOptions.outDir', outDir || fromRoot('dist/lib'))
+  config.set('include', include ? [include] : [fromRoot('src')])
+  config.save()
+}
+
 const useBuiltinConfig = !args.includes('--config') && !hasFile('rollup.config.js')
+
 
 // ## Options we pass to bin start
 
@@ -29,7 +44,7 @@ const useBuiltinConfig = !args.includes('--config') && !hasFile('rollup.config.j
 // in this case package config will be used
 const config = useBuiltinConfig ? `--config ${here('../../config/rollup.config.js')}` : ''
 
-const watch = parsedArgs.watch ? '--watch' : '';
+const watch = parsedWatch ? '--watch' : '';
 
 const rollupOptions = [config, watch];
 
@@ -45,7 +60,8 @@ const getScripts = () => (
     const env = [
       `BUILD_FORMAT=${formatName}`,
       `BUILD_MINIFY=${buildMinify}`,
-      `BUILD_CLI=${buildCLI}`
+      `BUILD_CLI=${buildCLI}`,
+      `PATH_TO_TS_CONFIG=${pathToTsConfig}`
     ].join(' ')
 
     return getScript(env)

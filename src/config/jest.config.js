@@ -23,7 +23,7 @@ module.exports = {
   collectCoverageFrom: ["src/*.ts"], // An array of glob patterns indicating a set of files for which coverage information should be collected.
   globals: {
     'ts-jest': {
-      tsConfig: path.resolve(__dirname, '../../tsconfig.json'),
+      tsConfig: path.resolve(__dirname, './tsconfig.json'),
     },
   }
 }
