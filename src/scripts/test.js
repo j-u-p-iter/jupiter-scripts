@@ -1,24 +1,26 @@
-const isCI = require('is-ci')
-const path = require('path')
+const isCI = require("is-ci");
+const path = require("path");
 
-const {
-  hasFile,
-  hasPkgProp,
-} = require('../utils');
+const { hasFile, hasPkgProp } = require("../utils");
 
-const here = (...props) => path.join(__dirname, ...props)
+const here = (...props) => path.join(__dirname, ...props);
 
-const args = process.argv.slice(2)
+const args = process.argv.slice(2);
 
-const isCoverage = args.includes('--coverage')
-const useBuiltinConfig = !args.includes('--config') && !hasFile('jest.config.js') && !hasPkgProp('jest')
+const isCoverage = args.includes("--coverage");
+const useBuiltinConfig =
+  !args.includes("--config") &&
+  !hasFile("jest.config.js") &&
+  !hasPkgProp("jest");
 
 // ## Options we pass to bin start
-const watch = !isCI && !isCoverage ? '--watch' : ''
+const watch = !isCI && !isCoverage ? "--watch" : "";
 
-const config = useBuiltinConfig ? `--config ${here('../config/jest.config.js')}` : ''
+const config = useBuiltinConfig
+  ? `--config ${here("../config/jest.config.js")}`
+  : "";
 
-const jestOptions = [config, watch, ...args].filter(Boolean).join(' ')
+const jestOptions = [config, watch, ...args].filter(Boolean).join(" ");
 // ## Options we pass to bin end
 
-require('jest').run(jestOptions)
+require("jest").run(jestOptions);

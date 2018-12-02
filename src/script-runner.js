@@ -1,8 +1,8 @@
-const path = require('path')
-const spawn = require('cross-spawn')
-const glob = require('glob')
+const path = require("path");
+const spawn = require("cross-spawn");
+const glob = require("glob");
 
-const { handleSpawnSignal } = require('./utils')
+const { handleSpawnSignal } = require("./utils");
 
 // executor - programm, that run our binary (npx, node, ts-node). Binary, that starts another binary.
 // bin - name (jupiter-scripts) or path (lib (node lib)) of/to our binary
@@ -10,68 +10,67 @@ const { handleSpawnSignal } = require('./utils')
 // args - array of arguments, that should be passed to script we try to run with binary
 //
 // So, executor runs binary, binary runs script
-const [executor, bin, scriptName, ...args] = process.argv
-
+const [executor, bin, scriptName, ...args] = process.argv;
 
 function spawnScript() {
-  const relativeScriptPath = path.join(__dirname, 'scripts', scriptName)
+  const relativeScriptPath = path.join(__dirname, "scripts", scriptName);
   // by default it search for index.js
   // if there's package.json, path will be generated to the file
   // in main package.json key
-  const mainScriptPath = attemptToResolve(relativeScriptPath)
+  const mainScriptPath = attemptToResolve(relativeScriptPath);
 
   if (!mainScriptPath) {
-    throw new Error(`Unknown script "${scriptName}"`)
+    throw new Error(`Unknown script "${scriptName}"`);
   }
 
   const { signal, status } = spawn.sync(executor, [mainScriptPath, ...args], {
-    stdio: 'inherit',
-  })
+    stdio: "inherit"
+  });
 
   if (signal) {
-    handleSpawnSignal(scriptName, signal)
+    handleSpawnSignal(scriptName, signal);
   } else {
-    process.exit(status)
+    process.exit(status);
   }
 }
 
-function attemptToResolve(path) {
+function attemptToResolve(moduleName) {
   try {
-    return require.resolve(path)
-  } catch(error) {
+    return require.resolve(moduleName);
+  } catch (error) {
     return null;
   }
 }
 
 const runScript = () => {
   if (scriptName) {
-    spawnScript()
+    spawnScript();
   } else {
-    const scriptsPath = path.join(__dirname, 'scripts/')
-    const availableScripts = glob.sync(path.join(__dirname, 'scripts', '*'))
+    const scriptsPath = path.join(__dirname, "scripts/");
+    const availableScripts = glob.sync(path.join(__dirname, "scripts", "*"));
 
     const availableScriptsMessage = availableScripts
-      .map(
-        script => script
-          .replace('__tests__', '')
-          .replace(scriptsPath, '')
-          .replace('.ts', '')
+      .map(script =>
+        script
+          .replace("__tests__", "")
+          .replace(scriptsPath, "")
+          .replace(".ts", "")
       )
       .filter(Boolean)
-      .join('\n ')
+      .join("\n ");
 
     const fullMessage = `
   Usage: ${bin} [script] [--flags]
 
   Available Scripts:
   ${availableScriptsMessage}
-    `
+    `;
 
-    console.log(fullMessage)
+    console.log(fullMessage);
 
-    process.exit(0)
+    process.exit(0);
   }
-}
+};
 
 module.exports = {
   runScript

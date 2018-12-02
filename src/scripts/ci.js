@@ -1,2 +1,1 @@
-const spawn = require('cross-spawn')
-
+const spawn = require("cross-spawn");
