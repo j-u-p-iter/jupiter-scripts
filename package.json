@@ -10,7 +10,7 @@
     "jupiter-scripts": "dist/lib/index.js"
   },
   "scripts": {
-    "build": "node src build --cli --outDir ../../dist/lib --include ../../src",
+    "build": "node src build --cli --outDir ../../dist --include ../../src --allowJs",
     "lint": "node src lint",
     "test": "node src test"
   },

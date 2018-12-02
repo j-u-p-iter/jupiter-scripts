@@ -17,7 +17,7 @@ const {
 } = require('../../utils')
 
 const args = process.argv.slice(2)
-const { outDir, include } = yargsParser(args)
+const { outDir, include, allowJs } = yargsParser(args)
 const here = p => path.join(__dirname, p);
 
 // So, there're several ways to set configs for babel bin:
@@ -35,7 +35,16 @@ const pathToConfig = path.resolve(__dirname, '../../config/tsconfig.json');
 if (useBuiltinConfig) {
   const config = editJsonFile(pathToConfig);
 
-  config.set('compilerOptions.outDir', outDir || fromRoot('dist/lib'))
+  config.set('compilerOptions.allowJs', allowJs);
+  config.set('compilerOptions.declaration', !allowJs);
+
+  if (allowJs) {
+    config.unset('compilerOptions.declarationDir')
+  } else {
+    config.set('compilerOptions.declarationDir', outDir ? `${outDir}/types` : fromRoot('dist/types'))
+  }
+
+  config.set('compilerOptions.outDir', outDir ? `${outDir}/lib` : fromRoot('dist/lib'))
   config.set('include', include ? [include] : [fromRoot('src')])
   config.save()
 }

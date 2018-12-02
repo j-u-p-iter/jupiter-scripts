@@ -9,7 +9,7 @@ const { handleSpawnSignal, resolveBin, hasFile, fromRoot } = require('../../util
 const TYPESCRIPT_CONFIG_NAME = 'tsconfig.json'
 const pathToRollupBin = resolveBin('rollup')
 const args = process.argv.slice(2)
-const { bundle, watch: parsedWatch, outDir, include } = yargsParser(args)
+const { bundle, watch: parsedWatch, outDir, include, allowJs } = yargsParser(args)
 const here = (...props) => path.join(__dirname, ...props)
 
 const formats = typeof bundle === 'string'
@@ -29,6 +29,15 @@ const pathToTsConfig = useBuiltInTypeScriptConfig ? path.resolve(__dirname, `../
 
 if (useBuiltInTypeScriptConfig) {
   const config = editJsonFile(pathToTsConfig);
+
+  config.set('compilerOptions.allowJs', allowJs);
+  config.set('compilerOptions.declaration', !allowJs);
+
+  if (allowJs) {
+    config.unset('compilerOptions.declarationDir')
+  } else {
+    config.set('compilerOptions.declarationDir', outDir ? `${outDir}/types` : fromRoot('dist/types'))
+  }
 
   config.set('compilerOptions.outDir', outDir || fromRoot('dist/lib'))
   config.set('include', include ? [include] : [fromRoot('src')])
