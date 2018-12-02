@@ -20,7 +20,7 @@ const { pkg: packageData, path: pkgPath } = readPkgUp.sync()
 const modulesFormats = (modulesToBuild) =>
   pick(packageData, POSSIBLE_MODULES_FORMATS).map((scriptName) => scriptName.split('.').reverse()[1]);
 
-const getModuleName = (moduleFormat, minify) => `${packageData.name}.${moduleFormat}${minify ? '.min.js': '.js'}`;
+const getModuleName = (moduleFormat, minify) => `${packageData.name.replace('@j.u.p.iter/', '')}.${moduleFormat}${minify ? '.min.js': '.js'}`;
 
 const getModulePath = (moduleFormat, minify) => `dist/lib/${getModuleName(moduleFormat, minify)}`
 
