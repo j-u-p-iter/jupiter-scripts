@@ -52,6 +52,16 @@ describe('lint script', () => {
   });
 
   describe('spawn.sync', () => {
+    describe('script', () => {
+      it('should be correct', () => {
+        runScript();
+
+        const [[script]] = mockCrossSpawnSync.mock.calls;
+
+        expect(script).toBe(utils.resolveBin('tslint'));
+      });
+    });
+
     describe('config option', () => {
       describe('without --config option and without custom tslint.json file', () => {
         it('should be called with builtin config', () => {
@@ -62,10 +72,9 @@ describe('lint script', () => {
 
           const [firstCall] = mockCrossSpawnSync.mock.calls;
 
-          const [script, configs] = firstCall;
+          const [, configs] = firstCall;
           const resultConfig = utils.parseArgs(configs).config;
 
-          expect(script).toBe(utils.resolveBin('tslint'));
           expect(resultConfig).toBe(path.resolve(__dirname, '../../config/tslint.json'));
         });
       });
@@ -78,11 +87,10 @@ describe('lint script', () => {
           runScript();
 
           const [firstCall] = mockCrossSpawnSync.mock.calls;
-          const [script, configs] = firstCall;
+          const [, configs] = firstCall;
 
           const resultConfig = utils.parseArgs(configs).config;
 
-          expect(script).toBe(utils.resolveBin('tslint'));
           expect(resultConfig).toBe(pathToConfig);
         });
       });
@@ -95,11 +103,10 @@ describe('lint script', () => {
           runScript();
 
           const [firstCall] = mockCrossSpawnSync.mock.calls;
-          const [script, configs] = firstCall;
+          const [, configs] = firstCall;
 
           const resultConfig = utils.parseArgs(configs).config;
 
-          expect(script).toBe(utils.resolveBin('tslint'));
           expect(resultConfig).toBeUndefined();
         });
       });
@@ -115,10 +122,9 @@ describe('lint script', () => {
 
           const [firstCall] = mockCrossSpawnSync.mock.calls;
 
-          const [script, configs] = firstCall;
+          const [, configs] = firstCall;
           const resultProject = utils.parseArgs(configs).project;
 
-          expect(script).toBe(utils.resolveBin('tslint'));
           expect(resultProject).toBe(path.resolve(__dirname, '../../config/tsconfig.json'));
         });
       });
@@ -131,11 +137,10 @@ describe('lint script', () => {
           runScript();
 
           const [firstCall] = mockCrossSpawnSync.mock.calls;
-          const [script, configs] = firstCall;
+          const [, configs] = firstCall;
 
           const resultProject = utils.parseArgs(configs).project;
 
-          expect(script).toBe(utils.resolveBin('tslint'));
           expect(resultProject).toBe(pathToConfig);
         });
       });
@@ -148,11 +153,10 @@ describe('lint script', () => {
           runScript();
 
           const [firstCall] = mockCrossSpawnSync.mock.calls;
-          const [script, configs] = firstCall;
+          const [, configs] = firstCall;
 
           const resultProject = utils.parseArgs(configs).project;
 
-          expect(script).toBe(utils.resolveBin('tslint'));
           expect(resultProject).toBeUndefined();
         });
       });
@@ -165,11 +169,10 @@ describe('lint script', () => {
         runScript();
 
         const [firstCall] = mockCrossSpawnSync.mock.calls;
-        const [script, configs] = firstCall;
+        const [, configs] = firstCall;
 
         const allowJs = utils.parseArgs(configs).allowJs;
 
-        expect(script).toBe(utils.resolveBin('tslint'));
         expect(allowJs).toBeUndefined();
       });
     });
