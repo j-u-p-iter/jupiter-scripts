@@ -1,10 +1,9 @@
 const isCI = require("is-ci");
-const path = require("path");
 const jest = require("jest");
 
-const { hasFile, hasPkgProp } = require("../utils");
+const { hasFile, hasPkgProp, resolvePath } = require("../utils");
 
-const here = (...props) => path.join(__dirname, ...props);
+const here = (...props) => resolvePath(__dirname, ...props);
 
 const args = process.argv.slice(2);
 

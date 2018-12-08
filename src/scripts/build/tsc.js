@@ -2,7 +2,6 @@
 // resolveJsonModule in tsconfig.json should be enabled
 require("../../config/tsconfig.json");
 
-const path = require("path");
 const spawn = require("cross-spawn");
 const rimraf = require("rimraf");
 
@@ -13,11 +12,12 @@ const {
   resolveBin,
   handleSpawnSignal,
   getPathToBuiltinTSConfig,
-  setupTSConfig
+  setupTSConfig,
+  resolvePath,
 } = require("../../utils");
 
 const args = process.argv.slice(2);
-const here = p => path.join(__dirname, p);
+const here = p => resolvePath(__dirname, p);
 
 // So, there're several ways to set configs for babel bin:
 

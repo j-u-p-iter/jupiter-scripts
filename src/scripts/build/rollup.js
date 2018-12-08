@@ -1,4 +1,3 @@
-const path = require("path");
 const spawn = require("cross-spawn");
 const yargsParser = require("yargs-parser");
 const rimraf = require("rimraf");
@@ -10,13 +9,14 @@ const {
   hasFile,
   fromRoot,
   setupTSConfig,
-  filterArgs
+  filterArgs,
+  resolvePath,
 } = require("../../utils");
 
 const pathToRollupBin = resolveBin("rollup");
 const args = process.argv.slice(2);
 const parsedArgs = yargsParser(args);
-const here = (...props) => path.join(__dirname, ...props);
+const here = (...props) => resolvePath(__dirname, ...props);
 
 const formats =
   typeof parsedArgs.bundle === "string"

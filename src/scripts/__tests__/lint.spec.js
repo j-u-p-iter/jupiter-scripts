@@ -7,7 +7,6 @@
 // 7. if spawn.sync returns signal - handleSpawnSignal should be called with correct args.
 // 8. if spawn.sync doesn't return signal - process.exit should be called with correct params.
 
-const path = require('path');
 const cases = require('jest-in-case');
 const mockTslintJson = jest.fn();
 jest.mock('../../config/tslint.json', () => mockTslintJson());
@@ -103,7 +102,7 @@ describe('lint script', () => {
 
     const resultConfig = utils.parseArgs(options)[optionName];
 
-    expect(resultConfig).toBe(path.resolve(__dirname, `../../config/${configName}`));
+    expect(resultConfig).toBe(utils.resolvePath(__dirname, `../../config/${configName}`));
   }, {
     'without custom tslint.json': { configName: 'tslint.json', optionName: 'config', hasFile: fileName => fileName !== 'tslint.json' },
     'without custom tsconfig.json': { configName: 'tsconfig.json', optionName: 'project', hasFile: fileName => fileName !== 'tsconfig.json' },

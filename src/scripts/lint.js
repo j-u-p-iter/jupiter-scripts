@@ -2,11 +2,10 @@
 // resolveJsonModule in tslint.json should be enabled
 require("../config/tslint.json");
 
-const path = require("path");
 const spawn = require("cross-spawn");
 const yargsParser = require("yargs-parser");
 
-const { hasFile, resolveBin, setupTSConfig, filterArgs, handleSpawnSignal } = require("../utils");
+const { hasFile, resolveBin, setupTSConfig, filterArgs, handleSpawnSignal, resolvePath } = require("../utils");
 
 const args = process.argv.slice(2);
 
@@ -19,11 +18,11 @@ const useBuiltinTSConfig =
   !args.includes("--project") && !hasFile("tsconfig.json");
 
 const pathToTSLintConfig = useBuiltinTSLintConfig
-  ? ["--config", path.resolve(__dirname, "../config/tslint.json")]
+  ? ["--config", resolvePath(__dirname, "../config/tslint.json")]
   : [];
 
 const pathToTSConfig = useBuiltinTSConfig
-  ? ["--project", path.resolve(__dirname, "../config/tsconfig.json")]
+  ? ["--project", resolvePath(__dirname, "../config/tsconfig.json")]
   : [];
 
 const { signal, status: statusResult } = spawn.sync(
