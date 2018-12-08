@@ -8,10 +8,10 @@ const {
   handleSpawnSignal,
   resolveBin,
   hasFile,
-  fromRoot
+  fromRoot,
+  setupTSConfig
 } = require("../../utils");
 
-const TYPESCRIPT_CONFIG_NAME = "tsconfig.json";
 const pathToRollupBin = resolveBin("rollup");
 const args = process.argv.slice(2);
 const { bundle, watch: parsedWatch, outDir, include, allowJs } = yargsParser(
@@ -31,40 +31,16 @@ if (cleanBundleDir) {
 
 const buildCLI = args.includes("--cli");
 
-const useBuiltInTypeScriptConfig = !hasFile(TYPESCRIPT_CONFIG_NAME);
+setupTSConfig();
 
-const pathToTsConfig = useBuiltInTypeScriptConfig
-  ? path.resolve(__dirname, `../../config/${TYPESCRIPT_CONFIG_NAME}`)
-  : fromRoot(TYPESCRIPT_CONFIG_NAME);
-
-if (useBuiltInTypeScriptConfig) {
-  const tsConfig = editJsonFile(pathToTsConfig);
-
-  tsConfig.set("compilerOptions.allowJs", allowJs);
-  tsConfig.set("compilerOptions.declaration", !allowJs);
-
-  if (allowJs) {
-    tsConfig.unset("compilerOptions.declarationDir");
-  } else {
-    tsConfig.set(
-      "compilerOptions.declarationDir",
-      outDir ? `${outDir}/types` : fromRoot("dist/types")
-    );
-  }
-
-  tsConfig.set("compilerOptions.outDir", outDir || fromRoot("dist/lib"));
-  tsConfig.set("include", include ? [include] : [fromRoot("src")]);
-  tsConfig.save();
-}
-
-const useBuiltinConfig =
+const useBuiltinRollupConfig =
   !args.includes("--config") && !hasFile("rollup.config.js");
 
 // ## Options we pass to bin start
 
 // set up builtin config or don't setup --config option
 // in this case package config will be used
-const config = useBuiltinConfig
+const config = useBuiltinRollupConfig
   ? `--config ${here("../../config/rollup.config.js")}`
   : "";
 
@@ -85,8 +61,7 @@ const getScripts = () =>
     const env = [
       `BUILD_FORMAT=${formatName}`,
       `BUILD_MINIFY=${buildMinify}`,
-      `BUILD_CLI=${buildCLI}`,
-      `PATH_TO_TS_CONFIG=${pathToTsConfig}`
+      `BUILD_CLI=${buildCLI}`
     ].join(" ");
 
     return getScript(env);

@@ -10,18 +10,17 @@
     "jupiter-scripts": "dist/lib/index.js"
   },
   "scripts": {
-    "build": "node src build --cli --outDir ../../dist --include ../../src --allowJs",
+    "build": "node src build --cli --allowJs",
     "test": "node src test",
-    "lint": "node src lint --format codeFrame"
+    "lint": "node src lint --allowJs --format codeFrame",
+    "lint:fix": "yarn run lint --fix"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/j-u-p-iter/scripts.git"
   },
   "files": [
-    "dist",
-    "babel.js",
-    "eslint.js"
+    "dist"
   ],
   "author": "Leontyev Kirill <pn79122821224@gmail.com> (j.u.p.iter)",
   "license": "MIT",

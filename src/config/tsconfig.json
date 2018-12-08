@@ -14,11 +14,11 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "declaration": false,
-    "outDir": "../../dist/lib",
+    "outDir": "/Users/kirillleontev/Sites/scripts/dist/lib",
     "allowJs": true
   },
   "include": [
-    "../../src"
+    "/Users/kirillleontev/Sites/scripts/src"
   ],
   "exclude": [
     "coverage",

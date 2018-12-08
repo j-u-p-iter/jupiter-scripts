@@ -6,13 +6,17 @@ const path = require("path");
 const spawn = require("cross-spawn");
 const yargsParser = require("yargs-parser");
 
-const { hasFile, resolveBin } = require("../utils");
+const { hasFile, resolveBin, setupTSConfig } = require("../utils");
 
 const args = process.argv.slice(2);
+const parsedArgs = yargsParser(args);
 
-const useBuiltinConfig = !args.includes("--config") && !hasFile("tslint.json");
+setupTSConfig(true);
 
-const pathToConfig = useBuiltinConfig
+const useBuiltinLintConfig =
+  !args.includes("--config") && !hasFile("tslint.json");
+
+const pathToConfig = useBuiltinLintConfig
   ? [
       "--project",
       path.resolve(__dirname, "../config/tsconfig.json"),
@@ -21,9 +25,19 @@ const pathToConfig = useBuiltinConfig
     ]
   : [];
 
+let options = [];
+
+if (parsedArgs.fix) {
+  options.push("--fix");
+}
+
+if (parsedArgs.format) {
+  options = [...options, "--format", parsedArgs.format];
+}
+
 const { signal, status: statusResult } = spawn.sync(
   resolveBin("tslint"),
-  [...pathToConfig, ...args],
+  [...pathToConfig, ...options],
   { stdio: "inherit" }
 );
 

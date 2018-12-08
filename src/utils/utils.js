@@ -11,6 +11,10 @@ const readPkgUp = require("read-pkg-up");
 const arrify = require("arrify");
 const { has, curry, get, keys, isArray } = require("lodash");
 const which = require("which");
+const yargsParser = require("yargs-parser");
+const editJsonFile = require("edit-json-file");
+
+const { TYPESCRIPT_CONFIG_NAME } = require("../config/common");
 
 const POSSIBLE_MODULES_FORMATS = ["main", "module", "umd:main"];
 
@@ -107,7 +111,7 @@ const resolveBin = (moduleName, { executable = moduleName } = {}) => {
   try {
     pathToBinFoundWithWhich = which.sync(executable);
   } catch (error) {
-    throw error;
+    // should stay empty
   }
 
   try {
@@ -155,6 +159,43 @@ const handleSpawnSignal = (scriptName, signal) => {
   process.exit(1);
 };
 
+const hasTSConfig = () => hasFile("tsconfig.json");
+
+const getPathToTSConfig = () =>
+  hasTSConfig() ? fromRoot(TYPESCRIPT_CONFIG_NAME) : getPathToBuiltinTSConfig();
+
+const getPathToBuiltinTSConfig = () =>
+  path.resolve(__dirname, `../config/${TYPESCRIPT_CONFIG_NAME}`);
+
+// we setup (only if project doesn't have it's own config in the root foler):
+// - declaration dirs paths
+// - include paths
+// - outDir paths
+// - allowJs flag
+const setupTSConfig = () => {
+  if (hasTSConfig()) {
+    return;
+  }
+
+  const { allowJs } = yargsParser(process.argv.slice(2));
+  const pathToConfig = path.resolve(__dirname, "../config/tsconfig.json");
+
+  const config = editJsonFile(pathToConfig);
+
+  config.set("compilerOptions.allowJs", allowJs);
+  config.set("compilerOptions.declaration", !allowJs);
+
+  if (allowJs) {
+    config.unset("compilerOptions.declarationDir");
+  } else {
+    config.set("compilerOptions.declarationDir", fromRoot("dist/types"));
+  }
+
+  config.set("compilerOptions.outDir", fromRoot("dist/lib"));
+  config.set("include", [fromRoot("src")]);
+  config.save();
+};
+
 module.exports = {
   appDirectory,
   parseEnv,
@@ -167,5 +208,8 @@ module.exports = {
   packageData,
   getModuleName,
   getModulePath,
-  generateExternals
+  generateExternals,
+  setupTSConfig,
+  getPathToBuiltinTSConfig,
+  getPathToTSConfig
 };

@@ -13,13 +13,13 @@ const {
   fromRoot,
   getModuleName,
   getModulePath,
-  generateExternals
+  generateExternals,
+  getPathToTSConfig
 } = require("../utils");
 
 const buildMinify = parseEnv("BUILD_MINIFY", false);
 const buildFormat = parseEnv("BUILD_FORMAT", false);
 const buildCLI = parseEnv("BUILD_CLI", false);
-const pathToTsConfig = parseEnv("PATH_TO_TS_CONFIG");
 
 const generateOutput = () => ({
   file: getModulePath(buildFormat, buildMinify),
@@ -38,7 +38,7 @@ module.exports = {
   plugins: [
     rollupJSON(),
     rollupTypeScript({
-      tsconfig: pathToTsConfig,
+      tsconfig: getPathToTSConfig(),
       // https://github.com/developit/microbundle/issues/169
       // https://github.com/developit/microbundle/pull/204
       // https://github.com/ezolenko/rollup-plugin-typescript2 ctrl+f `cacheRoot`
