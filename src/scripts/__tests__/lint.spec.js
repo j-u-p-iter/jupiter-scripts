@@ -75,21 +75,6 @@ describe('lint script', () => {
     });
 
     describe('config option', () => {
-      describe('without --config option and without custom tslint.json file', () => {
-        it('should be called with builtin config', () => {
-          const hasFile = jest.fn(() => false)
-          Object.assign(utils, { hasFile });
-
-          runScript();
-
-          const [[, configs]] = mockCrossSpawnSync.mock.calls;
-
-          const resultConfig = utils.parseArgs(configs).config;
-
-          expect(resultConfig).toBe(path.resolve(__dirname, '../../config/tslint.json'));
-        });
-      });
-
       describe('with --config option', () => {
         it('should be called with passed --config', () => {
           const pathToConfig = 'some-custom-config.json';
@@ -122,21 +107,6 @@ describe('lint script', () => {
     })
 
     describe('project option', () => {
-      describe('without --project option and without custom tsconfig.json file', () => {
-        it('should be called with builtin config', () => {
-          const hasFile = jest.fn(() => false)
-          Object.assign(utils, { hasFile });
-
-          runScript();
-
-          const [[, configs]] = mockCrossSpawnSync.mock.calls;
-
-          const resultProject = utils.parseArgs(configs).project;
-
-          expect(resultProject).toBe(path.resolve(__dirname, '../../config/tsconfig.json'));
-        });
-      });
-
       describe('with --project option', () => {
         it('should be called with passed --project', () => {
           const pathToConfig = 'some-custom-config.json';
