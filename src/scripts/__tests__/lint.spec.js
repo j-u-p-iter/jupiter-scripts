@@ -65,7 +65,7 @@ describe('lint script', () => {
   });
 
   cases('without custom config', ({
-    hasFile = () => false,
+    hasFile,
     optionName,
     configName,
   }) => {
@@ -79,8 +79,8 @@ describe('lint script', () => {
 
     expect(resultConfig).toBe(path.resolve(__dirname, `../../config/${configName}`));
   }, {
-    'tslint.json': { configName: 'tslint.json', optionName: 'config' },
-    'tsconfig.json': { configName: 'tsconfig.json', optionName: 'project' },
+    'tslint.json': { configName: 'tslint.json', optionName: 'config', hasFile: fileName => fileName !== 'tslint.json' },
+    'tsconfig.json': { configName: 'tsconfig.json', optionName: 'project', hasFile: fileName => fileName !== 'tsconfig.json' },
   });
 
   cases('with predefined config', ({
