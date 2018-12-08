@@ -8,6 +8,7 @@
 // 8. if spawn.sync doesn't return signal - process.exit should be called with correct params.
 
 const path = require('path');
+const cases = require('jest-in-case');
 const mockTslintJson = jest.fn();
 jest.mock('../../config/tslint.json', () => mockTslintJson());
 
@@ -34,21 +35,32 @@ describe('lint script', () => {
     Object.assign(utils, { setupTSConfig });
   });
 
-  describe('tslint.json', () => {
-    it('should be required', () => {
-      runScript();
 
-      // we require config to include this config into result dist folder
-      expect(mockTslintJson).toHaveBeenCalledTimes(1);
-    });
+  it('requires tslint.json and setup tsconfig', () => {
+    runScript();
+
+    // we require config to include this config into result dist folder
+    expect(mockTslintJson).toHaveBeenCalledTimes(1);
+    expect(utils.setupTSConfig).toHaveBeenCalledTimes(1);
   });
 
-  describe('setupTSConfig util', () => {
-    it('should be called', () => {
-      runScript();
+  cases('without custom config', ({
+    hasFile = () => false,
+    optionName,
+    configName,
+  }) => {
+    Object.assign(utils, { hasFile })
 
-      expect(utils.setupTSConfig).toHaveBeenCalledTimes(1);
-    });
+    runScript();
+
+    const [[, options]] = mockCrossSpawnSync.mock.calls;
+
+    const resultConfig = utils.parseArgs(options)[optionName];
+
+    expect(resultConfig).toBe(path.resolve(__dirname, `../../config/${configName}`));
+  }, {
+    'tslint.json': { configName: 'tslint.json', optionName: 'config' },
+    'tsconfig.json': { configName: 'tsconfig.json', optionName: 'project' },
   });
 
   describe('spawn.sync', () => {
