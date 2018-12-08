@@ -20,6 +20,7 @@ describe('lint script', () => {
   let setupTSConfig;
   let utils;
   let mockCrossSpawnSync;
+  let handleSpawnSignal;
 
   beforeEach(() => {
     jest.resetModules();
@@ -29,10 +30,11 @@ describe('lint script', () => {
 
     utils = require('../../utils');
 
+    handleSpawnSignal = jest.fn();
     setupTSConfig = jest.fn();
     process.argv = [];
     process.exit = jest.fn();
-    Object.assign(utils, { setupTSConfig });
+    Object.assign(utils, { setupTSConfig, handleSpawnSignal });
   });
 
 
@@ -62,6 +64,26 @@ describe('lint script', () => {
     const allowJs = utils.parseArgs(configs).allowJs;
 
     expect(allowJs).toBeUndefined();
+  });
+
+  it('calls handleSpawnSignal util when returned signal', () => {
+    const signal = 'some-signal';
+    mockCrossSpawnSync.mockReturnValue({ signal, status: 'some-status' });
+
+    runScript();
+
+    expect(utils.handleSpawnSignal).toHaveBeenCalledTimes(1);
+    expect(utils.handleSpawnSignal).toHaveBeenCalledWith('lint', signal);
+  });
+
+  it('calls process.exit with status when signal was not returned', () => {
+    const status = 'some-status';
+    mockCrossSpawnSync.mockReturnValue({ status });
+
+    runScript();
+
+    expect(process.exit).toHaveBeenCalledTimes(1);
+    expect(process.exit).toHaveBeenCalledWith(status);
   });
 
   cases('uses builtin config', ({

@@ -6,7 +6,7 @@ const path = require("path");
 const spawn = require("cross-spawn");
 const yargsParser = require("yargs-parser");
 
-const { hasFile, resolveBin, setupTSConfig, filterArgs } = require("../utils");
+const { hasFile, resolveBin, setupTSConfig, filterArgs, handleSpawnSignal } = require("../utils");
 
 const args = process.argv.slice(2);
 
@@ -33,7 +33,7 @@ const { signal, status: statusResult } = spawn.sync(
 );
 
 if (signal) {
-  handleSpawnSignal("tslint", signal);
+  handleSpawnSignal("lint", signal);
 } else {
   process.exit(statusResult);
 }
