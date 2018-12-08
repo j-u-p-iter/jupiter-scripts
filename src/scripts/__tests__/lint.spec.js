@@ -63,6 +63,24 @@ describe('lint script', () => {
     'tsconfig.json': { configName: 'tsconfig.json', optionName: 'project' },
   });
 
+  cases('with predefined config', ({
+    optionName,
+    pathToConfig,
+  }) => {
+    process.argv = ['node', '../lint', `--${optionName}`, pathToConfig];
+
+    runScript();
+
+    const [[, options]] = mockCrossSpawnSync.mock.calls;
+
+    const resultConfig = utils.parseArgs(options)[optionName];
+
+    expect(resultConfig).toBe(pathToConfig);
+  }, {
+    'tslint.json': { pathToConfig: '/some-folder/tslint.json', optionName: 'config' },
+    'tsconfig.json': { pathToConfig: '/some-folder/tsconfig.json', optionName: 'project' },
+  })
+
   describe('spawn.sync', () => {
     describe('script', () => {
       it('should be correct', () => {
@@ -75,21 +93,6 @@ describe('lint script', () => {
     });
 
     describe('config option', () => {
-      describe('with --config option', () => {
-        it('should be called with passed --config', () => {
-          const pathToConfig = 'some-custom-config.json';
-          process.argv = ['node', '../lint', '--config', pathToConfig];
-
-          runScript();
-
-          const [[, configs]] = mockCrossSpawnSync.mock.calls;
-
-          const resultConfig = utils.parseArgs(configs).config;
-
-          expect(resultConfig).toBe(pathToConfig);
-        });
-      });
-
       describe('with custom tslint.json file', () => {
         it('should be called without config option', () => {
           const hasFile = jest.fn(fileName => fileName === 'tslint.json')
@@ -107,21 +110,6 @@ describe('lint script', () => {
     })
 
     describe('project option', () => {
-      describe('with --project option', () => {
-        it('should be called with passed --project', () => {
-          const pathToConfig = 'some-custom-config.json';
-          process.argv = ['node', '../lint', '--project', pathToConfig];
-
-          runScript();
-
-          const [[, configs]] = mockCrossSpawnSync.mock.calls;
-
-          const resultProject = utils.parseArgs(configs).project;
-
-          expect(resultProject).toBe(pathToConfig);
-        });
-      });
-
       describe('with custom tsconfig.json file', () => {
         it('should be called without config option', () => {
           const hasFile = jest.fn(fileName => fileName === 'tsconfig.json')
