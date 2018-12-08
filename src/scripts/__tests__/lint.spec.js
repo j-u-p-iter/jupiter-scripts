@@ -18,7 +18,7 @@ const runScript = () => require('../lint');
 
 describe('lint script', () => {
   let setupTSConfig;
-  let utils;
+  let utils = {};
   let mockCrossSpawnSync;
   let handleSpawnSignal;
 
@@ -66,25 +66,29 @@ describe('lint script', () => {
     expect(allowJs).toBeUndefined();
   });
 
-  it('calls handleSpawnSignal util when returned signal', () => {
-    const signal = 'some-signal';
-    mockCrossSpawnSync.mockReturnValue({ signal, status: 'some-status' });
+  cases('processes result', ({
+    result,
+    calledMethod,
+    argsCalledWith,
+  }) => {
+    mockCrossSpawnSync.mockReturnValue(result);
 
     runScript();
 
-    expect(utils.handleSpawnSignal).toHaveBeenCalledTimes(1);
-    expect(utils.handleSpawnSignal).toHaveBeenCalledWith('lint', signal);
-  });
-
-  it('calls process.exit with status when signal was not returned', () => {
-    const status = 'some-status';
-    mockCrossSpawnSync.mockReturnValue({ status });
-
-    runScript();
-
-    expect(process.exit).toHaveBeenCalledTimes(1);
-    expect(process.exit).toHaveBeenCalledWith(status);
-  });
+    expect(calledMethod()).toHaveBeenCalledTimes(1);
+    expect(calledMethod()).toHaveBeenCalledWith(...argsCalledWith);
+  }, {
+    'calling handleSpawnSignal util when returned signal': {
+      result: { signal: 'some-signal', status: 'some-status' },
+      calledMethod: () => utils.handleSpawnSignal,
+      argsCalledWith: ['lint', 'some-signal'],
+    },
+    'calling process.exit when signal was not returned': {
+      result: { status: 'some-status' },
+      calledMethod: () => process.exit,
+      argsCalledWith: ['some-status']
+    }
+  })
 
   cases('uses builtin config', ({
     hasFile,
