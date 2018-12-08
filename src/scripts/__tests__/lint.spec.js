@@ -1,12 +1,3 @@
-// 1. tslint.json is required
-// 2. setupTSConfig was called one time without args.
-// 3. if no tslint config option and no tslint.json file we use builtinTSLintConfig
-// 4. if no tsconfig and project option - we use builtin typescript config.
-// 5. allowJS option should be filtered.
-// 6. spawn.sync should be called with correct args.
-// 7. if spawn.sync returns signal - handleSpawnSignal should be called with correct args.
-// 8. if spawn.sync doesn't return signal - process.exit should be called with correct params.
-
 const cases = require('jest-in-case');
 const mockTslintJson = jest.fn();
 jest.mock('../../config/tslint.json', () => mockTslintJson());
