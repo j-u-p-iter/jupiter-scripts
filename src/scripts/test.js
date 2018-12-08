@@ -7,14 +7,14 @@ const here = (...props) => resolvePath(__dirname, ...props);
 
 const args = process.argv.slice(2);
 
+// ## Options we pass to bin start
 const isCoverage = args.includes("--coverage");
+const watch = !isCI && !isCoverage ? "--watch" : "";
+
 const useBuiltinConfig =
   !args.includes("--config") &&
   !hasFile("jest.config.js") &&
   !hasPkgProp("jest");
-
-// ## Options we pass to bin start
-const watch = !isCI && !isCoverage ? "--watch" : "";
 
 const config = useBuiltinConfig
   ? `--config ${here("../config/jest.config.js")}`
