@@ -13,12 +13,15 @@ const { has, curry, get, keys, isArray } = require("lodash");
 const which = require("which");
 const yargsParser = require("yargs-parser");
 const editJsonFile = require("edit-json-file");
+const { mapKeys, flatten } = require("lodash");
 
 const { TYPESCRIPT_CONFIG_NAME } = require("../config/common");
 
 const POSSIBLE_MODULES_FORMATS = ["main", "module", "umd:main"];
 
 const { pkg: packageData, path: pkgPath } = readPkgUp.sync();
+
+const parseArgs = argumentsToParse => yargsParser(argumentsToParse);
 
 const modulesFormats = modulesToBuild =>
   pick(packageData, POSSIBLE_MODULES_FORMATS).map(
@@ -196,6 +199,21 @@ const setupTSConfig = () => {
   config.save();
 };
 
+const filterBoolean = item => typeof item !== "boolean";
+
+const filterArgs = (args, filterFrom) => {
+  const parsedArgs = yargsParser(args);
+
+  return flatten(
+    Object.entries(parsedArgs)
+      .filter(
+        ([optionName, optionValue]) =>
+          !["_", ...filterFrom].includes(optionName)
+      )
+      .map(([optionName, optionValue]) => [`--${optionName}`, optionValue])
+  ).filter(filterBoolean);
+};
+
 module.exports = {
   appDirectory,
   parseEnv,
@@ -211,5 +229,7 @@ module.exports = {
   generateExternals,
   setupTSConfig,
   getPathToBuiltinTSConfig,
-  getPathToTSConfig
+  getPathToTSConfig,
+  filterArgs,
+  parseArgs,
 };
