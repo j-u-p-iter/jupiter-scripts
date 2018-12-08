@@ -1,4 +1,5 @@
 const cases = require('jest-in-case');
+
 const mockTslintJson = jest.fn();
 jest.mock('../../config/tslint.json', () => mockTslintJson());
 
