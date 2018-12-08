@@ -64,7 +64,7 @@ describe('lint script', () => {
     expect(allowJs).toBeUndefined();
   });
 
-  cases('without custom config', ({
+  cases('uses builtin config', ({
     hasFile,
     optionName,
     configName,
@@ -79,11 +79,11 @@ describe('lint script', () => {
 
     expect(resultConfig).toBe(path.resolve(__dirname, `../../config/${configName}`));
   }, {
-    'tslint.json': { configName: 'tslint.json', optionName: 'config', hasFile: fileName => fileName !== 'tslint.json' },
-    'tsconfig.json': { configName: 'tsconfig.json', optionName: 'project', hasFile: fileName => fileName !== 'tsconfig.json' },
+    'without custom tslint.json': { configName: 'tslint.json', optionName: 'config', hasFile: fileName => fileName !== 'tslint.json' },
+    'without custom tsconfig.json': { configName: 'tsconfig.json', optionName: 'project', hasFile: fileName => fileName !== 'tsconfig.json' },
   });
 
-  cases('with predefined config', ({
+  cases('uses predefined config', ({
     optionName,
     pathToConfig,
   }) => {
@@ -97,11 +97,11 @@ describe('lint script', () => {
 
     expect(resultConfig).toBe(pathToConfig);
   }, {
-    'tslint.json': { pathToConfig: '/some-folder/tslint.json', optionName: 'config' },
-    'tsconfig.json': { pathToConfig: '/some-folder/tsconfig.json', optionName: 'project' },
+    'with predefined --config tslint.json': { pathToConfig: '/some-folder/tslint.json', optionName: 'config' },
+    'with predefined --project tsconfig.json': { pathToConfig: '/some-folder/tsconfig.json', optionName: 'project' },
   });
 
-  cases('with builtin config', ({
+  cases('uses custom config', ({
     hasFile,
     optionName,
   }) => {
@@ -115,7 +115,7 @@ describe('lint script', () => {
 
     expect(resultConfig).toBeUndefined();
   }, {
-    'tslint.json': { hasFile: fileName => fileName === 'tslint.json', optionName: 'config' },
-    'tsconfig.json': { hasFile: fileName => fileName === 'tsconfig.json', optionName: 'project' },
+    'with custom tslint.json in project root': { hasFile: fileName => fileName === 'tslint.json', optionName: 'config' },
+    'with custom tsconfig.json in project root': { hasFile: fileName => fileName === 'tsconfig.json', optionName: 'project' },
   });
 });
