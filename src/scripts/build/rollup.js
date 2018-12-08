@@ -9,19 +9,18 @@ const {
   resolveBin,
   hasFile,
   fromRoot,
-  setupTSConfig
+  setupTSConfig,
+  filterArgs
 } = require("../../utils");
 
 const pathToRollupBin = resolveBin("rollup");
 const args = process.argv.slice(2);
-const { bundle, watch: parsedWatch, outDir, include, allowJs } = yargsParser(
-  args
-);
+const parsedArgs = yargsParser(args);
 const here = (...props) => path.join(__dirname, ...props);
 
 const formats =
-  typeof bundle === "string"
-    ? bundle.split(",").map(format => format.trim())
+  typeof parsedArgs.bundle === "string"
+    ? parsedArgs.bundle.split(",").map(format => format.trim())
     : ["esm", "cjs", "umd.min"];
 
 const cleanBundleDir = !args.includes("--no-clean");
@@ -44,12 +43,12 @@ const config = useBuiltinRollupConfig
   ? `--config ${here("../../config/rollup.config.js")}`
   : "";
 
-const watch = parsedWatch ? "--watch" : "";
-
-const rollupOptions = [config, watch];
+const rollupOptions = [
+  config,
+  ...filterArgs(args, ["allowJs", "cli", "bundle"])
+];
 
 // ## Options we pass to bin end
-
 const getScript = env =>
   [env, pathToRollupBin, ...rollupOptions].filter(Boolean).join(" ");
 

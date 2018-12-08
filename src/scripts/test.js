@@ -1,5 +1,6 @@
 const isCI = require("is-ci");
 const path = require("path");
+const jest = require("jest");
 
 const { hasFile, hasPkgProp } = require("../utils");
 
@@ -23,4 +24,4 @@ const config = useBuiltinConfig
 const jestOptions = [config, watch, ...args].filter(Boolean).join(" ");
 // ## Options we pass to bin end
 
-require("jest").run(jestOptions);
+jest.run(jestOptions);
