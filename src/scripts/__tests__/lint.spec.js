@@ -70,9 +70,8 @@ describe('lint script', () => {
 
           runScript();
 
-          const [firstCall] = mockCrossSpawnSync.mock.calls;
+          const [[, configs]] = mockCrossSpawnSync.mock.calls;
 
-          const [, configs] = firstCall;
           const resultConfig = utils.parseArgs(configs).config;
 
           expect(resultConfig).toBe(path.resolve(__dirname, '../../config/tslint.json'));
@@ -86,8 +85,7 @@ describe('lint script', () => {
 
           runScript();
 
-          const [firstCall] = mockCrossSpawnSync.mock.calls;
-          const [, configs] = firstCall;
+          const [[, configs]] = mockCrossSpawnSync.mock.calls;
 
           const resultConfig = utils.parseArgs(configs).config;
 
@@ -102,8 +100,7 @@ describe('lint script', () => {
 
           runScript();
 
-          const [firstCall] = mockCrossSpawnSync.mock.calls;
-          const [, configs] = firstCall;
+          const [[, configs]] = mockCrossSpawnSync.mock.calls;
 
           const resultConfig = utils.parseArgs(configs).config;
 
@@ -120,9 +117,8 @@ describe('lint script', () => {
 
           runScript();
 
-          const [firstCall] = mockCrossSpawnSync.mock.calls;
+          const [[, configs]] = mockCrossSpawnSync.mock.calls;
 
-          const [, configs] = firstCall;
           const resultProject = utils.parseArgs(configs).project;
 
           expect(resultProject).toBe(path.resolve(__dirname, '../../config/tsconfig.json'));
@@ -136,8 +132,7 @@ describe('lint script', () => {
 
           runScript();
 
-          const [firstCall] = mockCrossSpawnSync.mock.calls;
-          const [, configs] = firstCall;
+          const [[, configs]] = mockCrossSpawnSync.mock.calls;
 
           const resultProject = utils.parseArgs(configs).project;
 
@@ -152,8 +147,7 @@ describe('lint script', () => {
 
           runScript();
 
-          const [firstCall] = mockCrossSpawnSync.mock.calls;
-          const [, configs] = firstCall;
+          const [[, configs]] = mockCrossSpawnSync.mock.calls;
 
           const resultProject = utils.parseArgs(configs).project;
 
@@ -168,8 +162,7 @@ describe('lint script', () => {
 
         runScript();
 
-        const [firstCall] = mockCrossSpawnSync.mock.calls;
-        const [, configs] = firstCall;
+        const [[, configs]] = mockCrossSpawnSync.mock.calls;
 
         const allowJs = utils.parseArgs(configs).allowJs;
 
