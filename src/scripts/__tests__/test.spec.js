@@ -1,3 +1,5 @@
+const cases = require('jest-in-case');
+
 jest.mock('jest', () => ({ run: jest.fn() }));
 
 let isCI;
@@ -19,79 +21,75 @@ describe('test script', () => {
     runScript = () => require('../test');
   });
 
-  it('uses custom config from --config', () => {
-    const pathToCustomConfig = '/some-folder/jest.confgig.js';
-    process.argv = ['node', '../test', '--config', pathToCustomConfig];
+  cases('uses config', ({
+    doBefore,
+    result,
+  }) => {
+    doBefore();
 
     runScript();
 
     const [[options]] = mockJestRun.mock.calls;
 
-    expect(utils.parseArgs(options).config).toBe(pathToCustomConfig);
+    expect(utils.parseArgs(options).config).toBe(typeof result === 'function' ? result() : result);
+  }, {
+    'from --config option': {
+      doBefore: () => {
+        process.argv = ['node', '../test', '--config', '/some-folder/jest.confgig.js'];
+      },
+      result: '/some-folder/jest.confgig.js',
+    },
+    'from project root': {
+      doBefore: () => {
+        const hasFile = fileName => fileName === 'jest.config.js';
+
+        Object.assign(utils, { hasFile });
+      },
+      result: undefined,
+    },
+    'from package.json': {
+      doBefore: () => {
+        const hasPkgProp = propName => propName === 'jest';
+
+        Object.assign(utils, { hasPkgProp });
+      },
+      result: undefined,
+    },
+    'builtin by default': {
+      doBefore: () => {
+        const hasFile = fileName => fileName !== 'jest.config.js';
+        const hasPkgProp = propName => propName !== 'jest';
+
+        Object.assign(utils, { hasFile, hasPkgProp });
+      },
+      result: () => utils.resolvePath(__dirname, '../../config/jest.config.js')
+    }
   });
 
-  it('uses custom config jest.config.js from project root', () => {
-    const hasFile = fileName => fileName === 'jest.config.js';
-
-    Object.assign(utils, { hasFile });
+  cases('watch', ({
+    doBefore = () => {},
+    result,
+  }) => {
+    doBefore();
 
     runScript();
 
     const [[options]] = mockJestRun.mock.calls;
 
-    expect(utils.parseArgs(options).config).toBeUndefined();
-  });
-
-  it('uses custom config from package.json', () => {
-    const hasPkgProp = propName => propName === 'jest';
-
-    Object.assign(utils, { hasPkgProp });
-
-    runScript();
-
-    const [[options]] = mockJestRun.mock.calls;
-
-    expect(utils.parseArgs(options).config).toBeUndefined();
-  });
-
-  it('uses builtin config without predefined configs', () => {
-    const hasFile = fileName => fileName !== 'jest.config.js';
-    const hasPkgProp = propName => propName !== 'jest';
-
-    Object.assign(utils, { hasFile, hasPkgProp });
-
-    runScript();
-
-    const [[options]] = mockJestRun.mock.calls;
-
-    expect(utils.parseArgs(options).config).toBe(utils.resolvePath(__dirname, '../../config/jest.config.js'));
-  });
-
-  it('does not watch changes in CI environment', () => {
-    isCI = true;
-
-    runScript();
-
-    const [[options]] = mockJestRun.mock.calls;
-
-    expect(utils.parseArgs(options).watch).toBeUndefined();
-  });
-
-  it('does not watch changes with coverage option', () => {
-    process.argv = ['node', '../test', '--coverage'];
-
-    runScript();
-
-    const [[options]] = mockJestRun.mock.calls;
-
-    expect(utils.parseArgs(options).watch).toBeUndefined();
-  });
-
-  it('. watches changes in not CI environment without coverage option', () => {
-    runScript();
-
-    const [[options]] = mockJestRun.mock.calls;
-
-    expect(utils.parseArgs(options).watch).toBe(true);
-  });
+    expect(utils.parseArgs(options).watch).toBe(result);
+  }, {
+    'does not happen in CI': {
+      doBefore: () => { isCI = true },
+      result: undefined,
+    },
+    'does not happen with coverage option': {
+      doBefore: () => {
+        process.argv = ['node', '../test', '--coverage'];
+      },
+      result: undefined,
+    },
+    'happens in not CI environment without coverage option (by default)': {
+      result: true,
+    }
+  })
 });
