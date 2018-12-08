@@ -79,6 +79,24 @@ describe('lint script', () => {
   }, {
     'tslint.json': { pathToConfig: '/some-folder/tslint.json', optionName: 'config' },
     'tsconfig.json': { pathToConfig: '/some-folder/tsconfig.json', optionName: 'project' },
+  });
+
+  cases('with builtin config', ({
+    hasFile,
+    optionName,
+  }) => {
+    Object.assign(utils, { hasFile });
+
+    runScript();
+
+    const [[, options]] = mockCrossSpawnSync.mock.calls;
+
+    const resultConfig = utils.parseArgs(options)[optionName];
+
+    expect(resultConfig).toBeUndefined();
+  }, {
+    'tslint.json': { hasFile: fileName => fileName === 'tslint.json', optionName: 'config' },
+    'tsconfig.json': { hasFile: fileName => fileName === 'tsconfig.json', optionName: 'project' },
   })
 
   describe('spawn.sync', () => {
@@ -108,36 +126,5 @@ describe('lint script', () => {
         });
       });
     })
-
-    describe('project option', () => {
-      describe('with custom tsconfig.json file', () => {
-        it('should be called without config option', () => {
-          const hasFile = jest.fn(fileName => fileName === 'tsconfig.json')
-          Object.assign(utils, { hasFile });
-
-          runScript();
-
-          const [[, configs]] = mockCrossSpawnSync.mock.calls;
-
-          const resultProject = utils.parseArgs(configs).project;
-
-          expect(resultProject).toBeUndefined();
-        });
-      });
-    });
-
-    describe('allowJs option', () => {
-      it('should be filtered out', () => {
-        process.argv = ['--allowJs'];
-
-        runScript();
-
-        const [[, configs]] = mockCrossSpawnSync.mock.calls;
-
-        const allowJs = utils.parseArgs(configs).allowJs;
-
-        expect(allowJs).toBeUndefined();
-      });
-    });
   });
 });
