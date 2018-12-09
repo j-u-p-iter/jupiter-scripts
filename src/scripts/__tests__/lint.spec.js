@@ -46,7 +46,7 @@ describe('lint script', () => {
   });
 
   it('filters out helper options', () => {
-    process.argv = ['--allowJs'];
+    process.argv = ['node', '../lint', '--allowJs'];
 
     runScript();
 
