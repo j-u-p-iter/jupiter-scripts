@@ -1,11 +1,13 @@
 const isCI = require("is-ci");
 const jest = require("jest");
 
-const { hasFile, hasPkgProp, resolvePath } = require("../utils");
+const { hasFile, hasPkgProp, resolvePath, filterArgs, setupTSConfig, arrayToString } = require("../utils");
 
 const here = (...props) => resolvePath(__dirname, ...props);
 
 const args = process.argv.slice(2);
+
+setupTSConfig();
 
 // ## Options we pass to bin start
 const isCoverage = args.includes("--coverage");
@@ -20,7 +22,7 @@ const config = useBuiltinConfig
   ? `--config ${here("../config/jest.config.js")}`
   : "";
 
-const jestOptions = [config, watch, ...args].filter(Boolean).join(" ");
+const jestOptions = arrayToString([config, watch, ...filterArgs(args, ['allowJs'])]);
 // ## Options we pass to bin end
 
 jest.run(jestOptions);

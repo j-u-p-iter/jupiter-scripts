@@ -9,16 +9,25 @@ describe('test script', () => {
   let mockJestRun;
   let utils;
   let runScript;
+  let setupTSConfig;
 
   beforeEach(() => {
     jest.resetModules();
 
+    setupTSConfig = jest.fn();
     ({ run: mockJestRun } = require('jest'));
     (utils = require('../../utils'));
     process.argv = [];
     isCI = false;
 
+    Object.assign(utils, { setupTSConfig });
     runScript = () => require('../test');
+  });
+
+  it('setup tsconfig', () => {
+    runScript();
+
+    expect(utils.setupTSConfig).toHaveBeenCalledTimes(1);
   });
 
   cases('uses config', ({
