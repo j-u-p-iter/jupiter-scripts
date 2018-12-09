@@ -5,7 +5,14 @@ require("../config/tslint.json");
 const spawn = require("cross-spawn");
 const yargsParser = require("yargs-parser");
 
-const { hasFile, resolveBin, setupTSConfig, filterArgs, handleSpawnSignal, resolvePath } = require("../utils");
+const {
+  hasFile,
+  resolveBin,
+  setupTSConfig,
+  filterArgs,
+  handleSpawnSignal,
+  resolvePath
+} = require("../utils");
 
 const args = process.argv.slice(2);
 

@@ -1,11 +1,11 @@
-const cases = require('jest-in-case');
+const cases = require("jest-in-case");
 
-jest.mock('jest', () => ({ run: jest.fn() }));
+jest.mock("jest", () => ({ run: jest.fn() }));
 
 let isCI;
-jest.mock('is-ci', () => isCI);
+jest.mock("is-ci", () => isCI);
 
-describe('test script', () => {
+describe("test script", () => {
   let mockJestRun;
   let utils;
   let runScript;
@@ -15,23 +15,23 @@ describe('test script', () => {
     jest.resetModules();
 
     setupTSConfig = jest.fn();
-    ({ run: mockJestRun } = require('jest'));
-    (utils = require('../../utils'));
+    ({ run: mockJestRun } = require("jest"));
+    utils = require("../../utils");
     process.argv = [];
     isCI = false;
 
     Object.assign(utils, { setupTSConfig });
-    runScript = () => require('../test');
+    runScript = () => require("../test");
   });
 
-  it('setup tsconfig', () => {
+  it("setup tsconfig", () => {
     runScript();
 
     expect(utils.setupTSConfig).toHaveBeenCalledTimes(1);
   });
 
-  it('filters out helper options', () => {
-    process.argv = ['node', '../test', '--allowJs'];
+  it("filters out helper options", () => {
+    process.argv = ["node", "../test", "--allowJs"];
 
     runScript();
 
@@ -42,75 +42,87 @@ describe('test script', () => {
     expect(allowJs).toBeUndefined();
   });
 
-  cases('uses config', ({
-    doBefore,
-    result,
-  }) => {
-    doBefore();
+  cases(
+    "uses config",
+    ({ doBefore, result }) => {
+      doBefore();
 
-    runScript();
+      runScript();
 
-    const [[options]] = mockJestRun.mock.calls;
+      const [[options]] = mockJestRun.mock.calls;
 
-    expect(utils.parseArgs(options).config).toBe(typeof result === 'function' ? result() : result);
-  }, {
-    'from --config option': {
-      doBefore: () => {
-        process.argv = ['node', '../test', '--config', '/some-folder/jest.confgig.js'];
-      },
-      result: '/some-folder/jest.confgig.js',
+      expect(utils.parseArgs(options).config).toBe(
+        typeof result === "function" ? result() : result
+      );
     },
-    'from project root': {
-      doBefore: () => {
-        const hasFile = fileName => fileName === 'jest.config.js';
-
-        Object.assign(utils, { hasFile });
+    {
+      "from --config option": {
+        doBefore: () => {
+          process.argv = [
+            "node",
+            "../test",
+            "--config",
+            "/some-folder/jest.confgig.js"
+          ];
+        },
+        result: "/some-folder/jest.confgig.js"
       },
-      result: undefined,
-    },
-    'from package.json': {
-      doBefore: () => {
-        const hasPkgProp = propName => propName === 'jest';
+      "from project root": {
+        doBefore: () => {
+          const hasFile = fileName => fileName === "jest.config.js";
 
-        Object.assign(utils, { hasPkgProp });
+          Object.assign(utils, { hasFile });
+        },
+        result: undefined
       },
-      result: undefined,
-    },
-    'builtin by default': {
-      doBefore: () => {
-        const hasFile = fileName => fileName !== 'jest.config.js';
-        const hasPkgProp = propName => propName !== 'jest';
+      "from package.json": {
+        doBefore: () => {
+          const hasPkgProp = propName => propName === "jest";
 
-        Object.assign(utils, { hasFile, hasPkgProp });
+          Object.assign(utils, { hasPkgProp });
+        },
+        result: undefined
       },
-      result: () => utils.resolvePath(__dirname, '../../config/jest.config.js')
+      "builtin by default": {
+        doBefore: () => {
+          const hasFile = fileName => fileName !== "jest.config.js";
+          const hasPkgProp = propName => propName !== "jest";
+
+          Object.assign(utils, { hasFile, hasPkgProp });
+        },
+        result: () =>
+          utils.resolvePath(__dirname, "../../config/jest.config.js")
+      }
     }
-  });
+  );
 
-  cases('watch', ({
-    doBefore = () => {},
-    result,
-  }) => {
-    doBefore();
+  cases(
+    "watch",
+    ({ doBefore = () => {}, result }) => {
+      doBefore();
 
-    runScript();
+      runScript();
 
-    const [[options]] = mockJestRun.mock.calls;
+      const [[options]] = mockJestRun.mock.calls;
 
-    expect(utils.parseArgs(options).watch).toBe(result);
-  }, {
-    'does not happen in CI': {
-      doBefore: () => { isCI = true },
-      result: undefined,
+      expect(utils.parseArgs(options).watch).toBe(result);
     },
-    'does not happen with coverage option': {
-      doBefore: () => {
-        process.argv = ['node', '../test', '--coverage'];
+    {
+      "does not happen in CI": {
+        doBefore: () => {
+          isCI = true;
+        },
+        result: undefined
       },
-      result: undefined,
-    },
-    'happens in not CI environment without coverage option (by default)': {
-      result: true,
+      "does not happen with coverage option": {
+        doBefore: () => {
+          process.argv = ["node", "../test", "--coverage"];
+        },
+        result: undefined
+      },
+      "happens in not CI environment without coverage option (by default)": {
+        result: true
+      }
     }
-  })
+  );
 });

@@ -13,7 +13,7 @@ const {
   handleSpawnSignal,
   getPathToBuiltinTSConfig,
   setupTSConfig,
-  resolvePath,
+  resolvePath
 } = require("../../utils");
 
 const args = process.argv.slice(2);

@@ -24,7 +24,7 @@ const { pkg: packageData, path: pkgPath } = readPkgUp.sync();
 const parseArgs = argumentsToParse => yargsParser(argumentsToParse);
 const resolvePath = (...paths) => path.resolve(...paths);
 
-const arrayToString = array => array.filter(Boolean).join(' ');
+const arrayToString = array => array.filter(Boolean).join(" ");
 
 const modulesFormats = modulesToBuild =>
   pick(packageData, POSSIBLE_MODULES_FORMATS).map(
@@ -236,5 +236,5 @@ module.exports = {
   filterArgs,
   parseArgs,
   resolvePath,
-  arrayToString,
+  arrayToString
 };

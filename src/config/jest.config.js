@@ -6,7 +6,7 @@ const jestConfig = {
   roots: [fromRoot("src")], // A list of paths to directories that Jest should use to search for files in.
   transform: {
     ".(ts|tsx)": "ts-jest"
-  }, /* A map from regular expressions to paths to transformers. A transformer is a module that provides a synchronous function for transforming source files. */
+  } /* A map from regular expressions to paths to transformers. A transformer is a module that provides a synchronous function for transforming source files. */,
   testEnvironment: "node", //The test environment that will be used for testing. The default environment in Jest is a browser-like environment through jsdom. If you are building a node service, you can use the node option to use a node-like environment instead.
   moduleFileExtensions: ["ts", "tsx", "js", "json"], // An array of file extensions your modules use. If you require modules without specifying a file extension, these are the extensions Jest will look for.
   testRegex: "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$", // The pattern Jest uses to detect test files.

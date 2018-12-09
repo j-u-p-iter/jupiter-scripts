@@ -1,13 +1,13 @@
-const cases = require('jest-in-case');
+const cases = require("jest-in-case");
 
 const mockTslintJson = jest.fn();
-jest.mock('../../config/tslint.json', () => mockTslintJson());
+jest.mock("../../config/tslint.json", () => mockTslintJson());
 
-jest.mock('cross-spawn', () => ({ sync: jest.fn(() => ({})) }))
+jest.mock("cross-spawn", () => ({ sync: jest.fn(() => ({})) }));
 
-const runScript = () => require('../lint');
+const runScript = () => require("../lint");
 
-describe('lint script', () => {
+describe("lint script", () => {
   let setupTSConfig;
   let utils = {};
   let mockCrossSpawnSync;
@@ -16,10 +16,9 @@ describe('lint script', () => {
   beforeEach(() => {
     jest.resetModules();
 
-    ({ sync: mockCrossSpawnSync } = require('cross-spawn'));
+    ({ sync: mockCrossSpawnSync } = require("cross-spawn"));
 
-
-    utils = require('../../utils');
+    utils = require("../../utils");
 
     handleSpawnSignal = jest.fn();
     setupTSConfig = jest.fn();
@@ -28,8 +27,7 @@ describe('lint script', () => {
     Object.assign(utils, { setupTSConfig, handleSpawnSignal });
   });
 
-
-  it('requires tslint.json and setup tsconfig', () => {
+  it("requires tslint.json and setup tsconfig", () => {
     runScript();
 
     // we require config to include this config into result dist folder
@@ -37,16 +35,16 @@ describe('lint script', () => {
     expect(utils.setupTSConfig).toHaveBeenCalledTimes(1);
   });
 
-  it('runs correct bin', () => {
+  it("runs correct bin", () => {
     runScript();
 
     const [[script]] = mockCrossSpawnSync.mock.calls;
 
-    expect(script).toBe(utils.resolveBin('tslint'));
+    expect(script).toBe(utils.resolveBin("tslint"));
   });
 
-  it('filters out helper options', () => {
-    process.argv = ['node', '../lint', '--allowJs'];
+  it("filters out helper options", () => {
+    process.argv = ["node", "../lint", "--allowJs"];
 
     runScript();
 
@@ -57,82 +55,106 @@ describe('lint script', () => {
     expect(allowJs).toBeUndefined();
   });
 
-  cases('processes result', ({
-    result,
-    calledMethod,
-    argsCalledWith,
-  }) => {
-    mockCrossSpawnSync.mockReturnValue(result);
+  cases(
+    "processes result",
+    ({ result, calledMethod, argsCalledWith }) => {
+      mockCrossSpawnSync.mockReturnValue(result);
 
-    runScript();
+      runScript();
 
-    expect(calledMethod()).toHaveBeenCalledTimes(1);
-    expect(calledMethod()).toHaveBeenCalledWith(...argsCalledWith);
-  }, {
-    'calling handleSpawnSignal util when returned signal': {
-      result: { signal: 'some-signal', status: 'some-status' },
-      calledMethod: () => utils.handleSpawnSignal,
-      argsCalledWith: ['lint', 'some-signal'],
+      expect(calledMethod()).toHaveBeenCalledTimes(1);
+      expect(calledMethod()).toHaveBeenCalledWith(...argsCalledWith);
     },
-    'calling process.exit when signal was not returned': {
-      result: { status: 'some-status' },
-      calledMethod: () => process.exit,
-      argsCalledWith: ['some-status']
+    {
+      "calling handleSpawnSignal util when returned signal": {
+        result: { signal: "some-signal", status: "some-status" },
+        calledMethod: () => utils.handleSpawnSignal,
+        argsCalledWith: ["lint", "some-signal"]
+      },
+      "calling process.exit when signal was not returned": {
+        result: { status: "some-status" },
+        calledMethod: () => process.exit,
+        argsCalledWith: ["some-status"]
+      }
     }
-  })
+  );
 
-  cases('uses builtin config', ({
-    hasFile,
-    optionName,
-    configName,
-  }) => {
-    Object.assign(utils, { hasFile })
+  cases(
+    "uses builtin config",
+    ({ hasFile, optionName, configName }) => {
+      Object.assign(utils, { hasFile });
 
-    runScript();
+      runScript();
 
-    const [[, options]] = mockCrossSpawnSync.mock.calls;
+      const [[, options]] = mockCrossSpawnSync.mock.calls;
 
-    const resultConfig = utils.parseArgs(options)[optionName];
+      const resultConfig = utils.parseArgs(options)[optionName];
 
-    expect(resultConfig).toBe(utils.resolvePath(__dirname, `../../config/${configName}`));
-  }, {
-    'without custom tslint.json': { configName: 'tslint.json', optionName: 'config', hasFile: fileName => fileName !== 'tslint.json' },
-    'without custom tsconfig.json': { configName: 'tsconfig.json', optionName: 'project', hasFile: fileName => fileName !== 'tsconfig.json' },
-  });
+      expect(resultConfig).toBe(
+        utils.resolvePath(__dirname, `../../config/${configName}`)
+      );
+    },
+    {
+      "without custom tslint.json": {
+        configName: "tslint.json",
+        optionName: "config",
+        hasFile: fileName => fileName !== "tslint.json"
+      },
+      "without custom tsconfig.json": {
+        configName: "tsconfig.json",
+        optionName: "project",
+        hasFile: fileName => fileName !== "tsconfig.json"
+      }
+    }
+  );
 
-  cases('uses predefined config', ({
-    optionName,
-    pathToConfig,
-  }) => {
-    process.argv = ['node', '../lint', `--${optionName}`, pathToConfig];
+  cases(
+    "uses predefined config",
+    ({ optionName, pathToConfig }) => {
+      process.argv = ["node", "../lint", `--${optionName}`, pathToConfig];
 
-    runScript();
+      runScript();
 
-    const [[, options]] = mockCrossSpawnSync.mock.calls;
+      const [[, options]] = mockCrossSpawnSync.mock.calls;
 
-    const resultConfig = utils.parseArgs(options)[optionName];
+      const resultConfig = utils.parseArgs(options)[optionName];
 
-    expect(resultConfig).toBe(pathToConfig);
-  }, {
-    'with predefined --config tslint.json': { pathToConfig: '/some-folder/tslint.json', optionName: 'config' },
-    'with predefined --project tsconfig.json': { pathToConfig: '/some-folder/tsconfig.json', optionName: 'project' },
-  });
+      expect(resultConfig).toBe(pathToConfig);
+    },
+    {
+      "with predefined --config tslint.json": {
+        pathToConfig: "/some-folder/tslint.json",
+        optionName: "config"
+      },
+      "with predefined --project tsconfig.json": {
+        pathToConfig: "/some-folder/tsconfig.json",
+        optionName: "project"
+      }
+    }
+  );
 
-  cases('uses custom config', ({
-    hasFile,
-    optionName,
-  }) => {
-    Object.assign(utils, { hasFile });
+  cases(
+    "uses custom config",
+    ({ hasFile, optionName }) => {
+      Object.assign(utils, { hasFile });
 
-    runScript();
+      runScript();
 
-    const [[, options]] = mockCrossSpawnSync.mock.calls;
+      const [[, options]] = mockCrossSpawnSync.mock.calls;
 
-    const resultConfig = utils.parseArgs(options)[optionName];
+      const resultConfig = utils.parseArgs(options)[optionName];
 
-    expect(resultConfig).toBeUndefined();
-  }, {
-    'with custom tslint.json in project root': { hasFile: fileName => fileName === 'tslint.json', optionName: 'config' },
-    'with custom tsconfig.json in project root': { hasFile: fileName => fileName === 'tsconfig.json', optionName: 'project' },
-  });
+      expect(resultConfig).toBeUndefined();
+    },
+    {
+      "with custom tslint.json in project root": {
+        hasFile: fileName => fileName === "tslint.json",
+        optionName: "config"
+      },
+      "with custom tsconfig.json in project root": {
+        hasFile: fileName => fileName === "tsconfig.json",
+        optionName: "project"
+      }
+    }
+  );
 });

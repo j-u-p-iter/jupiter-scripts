@@ -4,12 +4,14 @@
   "rules":{
     "prettier": true,
     "no-console": false,
-    "object-literal-sort-keys": "false"
+    "object-literal-sort-keys": "false",
+    "no-empty": false
   },
   "jsRules": {
     "prettier": true,
     "no-console": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "no-empty": false
   },
   "linterOptions": {
     "exclude": [
