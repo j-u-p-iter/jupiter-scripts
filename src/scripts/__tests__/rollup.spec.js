@@ -44,16 +44,6 @@ describe("rollup script", () => {
     expect(mockRimrafSync).toHaveBeenCalledWith(utils.fromRoot("dist"));
   });
 
-  it("filters out allowJs, cli and bundle options", () => {
-    process.argv = [...process.argv, "--allowJs", "--cli"];
-
-    runScript();
-
-    const [[, scripts]] = mockCrossSpawnSync.mock.calls;
-
-    expect();
-  });
-
   cases(
     "filters out options",
     ({ optionName }) => {
