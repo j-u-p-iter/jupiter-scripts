@@ -30,6 +30,18 @@ describe('test script', () => {
     expect(utils.setupTSConfig).toHaveBeenCalledTimes(1);
   });
 
+  it('filters out helper options', () => {
+    process.argv = ['node', '../test', '--allowJs'];
+
+    runScript();
+
+    const [[configs]] = mockJestRun.mock.calls;
+
+    const allowJs = utils.parseArgs(configs).allowJs;
+
+    expect(allowJs).toBeUndefined();
+  });
+
   cases('uses config', ({
     doBefore,
     result,
