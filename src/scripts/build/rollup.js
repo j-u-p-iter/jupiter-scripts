@@ -1,7 +1,6 @@
 const spawn = require("cross-spawn");
 const yargsParser = require("yargs-parser");
 const rimraf = require("rimraf");
-const editJsonFile = require("edit-json-file");
 
 const {
   handleSpawnSignal,
@@ -25,6 +24,7 @@ const formats =
     : ["esm", "cjs", "umd.min"];
 
 const cleanBundleDir = !args.includes("--no-clean");
+
 if (cleanBundleDir) {
   rimraf.sync(fromRoot("dist"));
 }
