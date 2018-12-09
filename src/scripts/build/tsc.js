@@ -48,7 +48,7 @@ const { signal, status: statusResult } = spawn.sync(
 );
 
 if (signal) {
-  handleSpawnSignal("build", signal);
+  handleSpawnSignal("tsc build", signal);
 } else {
   process.exit(statusResult);
 }
