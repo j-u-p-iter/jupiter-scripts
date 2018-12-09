@@ -19,7 +19,7 @@ const {
 const args = process.argv.slice(2);
 const here = p => resolvePath(__dirname, p);
 
-// So, there're several ways to set configs for babel bin:
+// So, there're several ways to set configs for typescript bin:
 
 // through CLI
 // with tsconfig.json
@@ -43,7 +43,7 @@ rimraf.sync(fromRoot("dist"));
 
 const { signal, status: statusResult } = spawn.sync(
   resolveBin("tsc"),
-  [...tsconfig],
+  [...tsconfig, ...args],
   { stdio: "inherit" }
 );
 

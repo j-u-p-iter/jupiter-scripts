@@ -114,4 +114,46 @@ describe('tsc script', () => {
       argsCalledWith: ['some-status']
     },
   });
+
+  cases('uses config', ({
+    doBefore = () => {},
+    result,
+    optionName,
+  }) => {
+    doBefore();
+
+    runScript();
+
+    const [[, options]] = mockCrossSpawnSync.mock.calls;
+
+    expect(utils.parseArgs(options)[optionName]).toBe(typeof result === 'function' ? result() : result);
+  }, {
+    'from -p option': {
+      doBefore: () => {
+        process.argv = ['node', '../build/tsc', '-p', '/some-folder/tsconfig.json']
+      },
+      result: '/some-folder/tsconfig.json',
+      optionName: 'p',
+    },
+    'from --project option': {
+      doBefore: () => {
+        process.argv = ['node', '../build/tsc', '--project', '/some-folder/tsconfig.json']
+      },
+      result: '/some-folder/tsconfig.json',
+      optionName: 'project',
+    },
+    'from root of the project': {
+      doBefore: () => {
+        const hasFile = fileName => fileName === 'tsconfig.json';
+
+        Object.assign(utils, { hasFile });
+      },
+      result: undefined,
+      optionName: 'project',
+    },
+    'builtin by default': {
+      result: () => utils.resolvePath(__dirname, '../../config/tsconfig.json'),
+      optionName: 'project',
+    }
+  })
 });
