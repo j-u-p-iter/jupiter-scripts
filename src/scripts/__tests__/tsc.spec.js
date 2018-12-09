@@ -1,23 +1,3 @@
-// 1. requires tsconfig.json
-// 2. calls setupTSConfig if uses builtin ts config
-// 3. removes root dist folder.
-// 4. uses custom config from --project option
-// 5. uses custom config from root of the project
-// 6. calls correct bin
-//
-//
-// 1. requires tsconfig.json
-// 1.5. setup tsconfig:
-//   - no project option
-//   - no config in the root part
-// 2. runs correct bin.
-// 3. proesses result
-// - calling handleSpawnSignal util when signal was returned
-// - calling process.exit when signal was not returned
-// 4. uses config from --project option
-// 5. uses config from root of the project
-// 6. uses config builtin by default
-
 const cases = require("jest-in-case");
 
 const mockTsConfigJson = jest.fn();
