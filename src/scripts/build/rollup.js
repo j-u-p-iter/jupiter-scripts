@@ -11,6 +11,7 @@ const {
   setupTSConfig,
   filterArgs,
   resolvePath,
+  arrayToString,
 } = require("../../utils");
 
 const pathToRollupBin = resolveBin("rollup");
@@ -49,8 +50,7 @@ const rollupOptions = [
 ];
 
 // ## Options we pass to bin end
-const getScript = env =>
-  [env, pathToRollupBin, ...rollupOptions].filter(Boolean).join(" ");
+const getScript = env => arrayToString([env, pathToRollupBin, ...rollupOptions]);
 
 const getScripts = () =>
   formats.map(format => {
