@@ -42,7 +42,7 @@ describe("tsc script", () => {
 
     // removes root dist folder
     expect(mockRimrafSync).toHaveBeenCalledTimes(1);
-    expect(mockRimrafSync).toHaveBeenCalledWith(utils.fromRoot('dist'));
+    expect(mockRimrafSync).toHaveBeenCalledWith(utils.fromRoot("dist"));
   });
 
   it("runs correct bin", () => {
