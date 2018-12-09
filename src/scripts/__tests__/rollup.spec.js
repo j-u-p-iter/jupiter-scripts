@@ -1,21 +1,7 @@
-// 4. uses config:
-//   - from --config option
-//   - from project root
-//   - builtin by default
-//
-// 5. filters out `allowJs, cli and bundle options`
-//
-// 6. formats
-//   - by default
-//   - with predefined formats
-//
-
-// 7. runs script individually for each format
-//
 // 8. scrips
-//    - contains BUILD_FORMAT env variable
-//    - contains BUILD_MINIFY env variable
-//    - contains BUILD_CLI env variable
+//   - contains BUILD_FORMAT env variable
+//   - contains BUILD_MINIFY env variable
+//   - contains BUILD_CLI env variable
 
 const cases = require("jest-in-case");
 
@@ -57,6 +43,36 @@ describe("rollup script", () => {
     expect(mockRimrafSync).toHaveBeenCalledTimes(1);
     expect(mockRimrafSync).toHaveBeenCalledWith(utils.fromRoot("dist"));
   });
+
+  it("filters out allowJs, cli and bundle options", () => {
+    process.argv = [...process.argv, "--allowJs", "--cli"];
+
+    runScript();
+
+    const [[, scripts]] = mockCrossSpawnSync.mock.calls;
+
+    expect();
+  });
+
+  cases(
+    "filters out options",
+    ({ optionName }) => {
+      process.argv = [...process.argv, optionName];
+
+      runScript();
+
+      const [[, scripts]] = mockCrossSpawnSync.mock.calls;
+
+      expect(scripts.join(" ")).toEqual(
+        expect.not.stringContaining(optionName)
+      );
+    },
+    {
+      "--allowJs": { optionName: "--allowJs" },
+      "--cli": { optionName: "--cli" },
+      "--bundle": { optionName: "--bundle" }
+    }
+  );
 
   it("doesn`t remove dist folder with --no-clean", () => {
     process.argv = [...process.argv, "--no-clean"];
@@ -122,6 +138,72 @@ describe("rollup script", () => {
             __dirname,
             "../../config/rollup.config.js"
           )}`
+      }
+    }
+  );
+
+  it('bundles "esm", "cjs", "umd.min" by default', () => {
+    runScript();
+
+    const [[, scripts]] = mockCrossSpawnSync.mock.calls;
+    const scriptsString = scripts.join(" ");
+
+    expect(scripts.length).toBe(3);
+
+    expect(scriptsString).toEqual(
+      expect.stringContaining("BUILD_FORMAT=esm BUILD_MINIFY=false")
+    );
+
+    expect(scriptsString).toEqual(
+      expect.stringContaining("BUILD_FORMAT=cjs BUILD_MINIFY=false")
+    );
+
+    expect(scriptsString).toEqual(
+      expect.stringContaining("BUILD_FORMAT=umd BUILD_MINIFY=true")
+    );
+  });
+
+  it("bundles format pointed with --bundle option", () => {
+    process.argv = [...process.argv, "superFormat, oneMoreSuperFormat.min"];
+
+    runScript();
+
+    const [[, scripts]] = mockCrossSpawnSync.mock.calls;
+    const scriptsString = scripts.join(" ");
+
+    expect(scripts.length).toBe(2);
+
+    expect(scriptsString).toEqual(
+      expect.stringContaining("BUILD_FORMAT=superFormat BUILD_MINIFY=false")
+    );
+
+    expect(scriptsString).toEqual(
+      expect.stringContaining(
+        "BUILD_FORMAT=oneMoreSuperFormat BUILD_MINIFY=true"
+      )
+    );
+  });
+
+  cases(
+    "BUILD_CLI environment variable",
+    ({ doBefore = () => {}, result }) => {
+      doBefore();
+
+      runScript();
+
+      const [[, scripts]] = mockCrossSpawnSync.mock.calls;
+
+      expect(scripts.join(" ")).toEqual(expect.stringContaining(result));
+    },
+    {
+      "with --cli option": {
+        doBefore: () => {
+          process.argv = [...process.argv, "--cli"];
+        },
+        result: "BUILD_CLI=true"
+      },
+      "without --cli option": {
+        result: "BUILD_CLI=false"
       }
     }
   );
