@@ -161,4 +161,21 @@ describe("tsc script", () => {
       }
     }
   );
+
+  cases(
+    "filters out options",
+    ({ optionName }) => {
+      process.argv = ["node", "../build/tsc", `--${optionName}`];
+
+      runScript();
+
+      const [[, options]] = mockCrossSpawnSync.mock.calls;
+
+      expect(utils.parseArgs(options)[optionName]).toBeUndefined();
+    },
+    {
+      "--allowJs": { optionName: "allowJs" },
+      "--cli": { optionName: "cli" }
+    }
+  );
 });

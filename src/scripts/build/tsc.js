@@ -13,7 +13,8 @@ const {
   handleSpawnSignal,
   getPathToBuiltinTSConfig,
   setupTSConfig,
-  resolvePath
+  resolvePath,
+  filterArgs
 } = require("../../utils");
 
 const args = process.argv.slice(2);
@@ -43,7 +44,7 @@ rimraf.sync(fromRoot("dist"));
 
 const { signal, status: statusResult } = spawn.sync(
   resolveBin("tsc"),
-  [...tsconfig, ...args],
+  [...tsconfig, ...filterArgs(args, ["allowJs", "cli"])],
   { stdio: "inherit" }
 );
 
