@@ -2,7 +2,7 @@ const { resolveJupiterScripts, arrayToString, parseEnv } = require("../utils");
 
 const jupiterScripts = resolveJupiterScripts();
 
-const ALLOW_JS = parseEnv('ALLOW_JS', false);
+const ALLOW_JS = parseEnv("ALLOW_JS", false);
 
 const testScriptOptions = arrayToString([
   ALLOW_JS && "--allowJs",

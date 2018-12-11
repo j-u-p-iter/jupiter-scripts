@@ -6,7 +6,7 @@ const {
   resolveBin,
   resolvePath,
   filterArgs,
-  setupTSConfig,
+  setupTSConfig
 } = require("../utils");
 
 const args = process.argv.slice(2);
@@ -31,8 +31,8 @@ const { signal, status: statusResult } = spawn.sync(
     stdio: "inherit",
     env: {
       ...process.env,
-      ALLOW_JS: args.includes('--allowJs'),
-    },
+      ALLOW_JS: args.includes("--allowJs")
+    }
   }
 );
 
