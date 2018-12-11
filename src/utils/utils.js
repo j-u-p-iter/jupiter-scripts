@@ -24,11 +24,10 @@ const { pkg: packageData, path: pkgPath } = readPkgUp.sync();
 const parseArgs = argumentsToParse => yargsParser(argumentsToParse);
 const resolvePath = (...paths) => path.resolve(...paths);
 
-const resolveJupiterScripts = () => (
-  packageData.name === '@j.u.p.iter/jupiter-scripts'
-    ? resolvePath(__dirname, '../')
-    : resolveBin('@j.u.p.iter/jupiter-scripts')
-);
+const resolveJupiterScripts = () =>
+  packageData.name === "@j.u.p.iter/jupiter-scripts"
+    ? require.resolve("../").replace(process.cwd(), ".")
+    : resolveBin("@j.u.p.iter/jupiter-scripts");
 
 const arrayToString = array => array.filter(Boolean).join(" ");
 
@@ -219,9 +218,7 @@ const filterArgs = (args, filterFrom) => {
         ([optionName, optionValue]) =>
           !["_", ...filterFrom].includes(optionName)
       )
-      .map((
-      [optionName, optionValue]) => [`--${optionName}`, optionValue]
-      )
+      .map(([optionName, optionValue]) => [`--${optionName}`, optionValue])
   ).filter(filterBoolean);
 };
 
@@ -245,5 +242,5 @@ module.exports = {
   parseArgs,
   resolvePath,
   arrayToString,
-  resolveJupiterScripts,
+  resolveJupiterScripts
 };

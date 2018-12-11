@@ -18,7 +18,8 @@ setupTSConfig();
 
 // ## Options we pass to bin start
 const isCoverage = args.includes("--coverage");
-const watch = !isCI && !isCoverage ? "--watch" : "";
+const noWatch = args.includes("--noWatch");
+const watch = !isCI && !isCoverage && !noWatch ? "--watch" : "";
 
 const useBuiltinConfig =
   !args.includes("--config") &&
@@ -32,7 +33,7 @@ const config = useBuiltinConfig
 const jestOptions = arrayToString([
   config,
   watch,
-  ...filterArgs(args, ["allowJs"])
+  ...filterArgs(args, ["allowJs", "noWatch"])
 ]);
 // ## Options we pass to bin end
 
