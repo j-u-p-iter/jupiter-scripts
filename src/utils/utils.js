@@ -24,6 +24,12 @@ const { pkg: packageData, path: pkgPath } = readPkgUp.sync();
 const parseArgs = argumentsToParse => yargsParser(argumentsToParse);
 const resolvePath = (...paths) => path.resolve(...paths);
 
+const resolveJupiterScripts = () => (
+  packageData.name === '@j.u.p.iter/jupiter-scripts'
+    ? resolvePath(__dirname, '../')
+    : resolveBin('@j.u.p.iter/jupiter-scripts')
+);
+
 const arrayToString = array => array.filter(Boolean).join(" ");
 
 const modulesFormats = modulesToBuild =>
@@ -236,5 +242,6 @@ module.exports = {
   filterArgs,
   parseArgs,
   resolvePath,
-  arrayToString
+  arrayToString,
+  resolveJupiterScripts,
 };
