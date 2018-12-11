@@ -1,15 +1,16 @@
-const { resolveJupiterScripts, arrayToString } = require("../utils");
+const { resolveJupiterScripts, arrayToString, parseEnv } = require("../utils");
 
 const jupiterScripts = resolveJupiterScripts();
 
-const allowJs = process.argv.includes("--allowJs");
+const ALLOW_JS = parseEnv('ALLOW_JS', false);
+
 const testScriptOptions = arrayToString([
-  "--allowJs",
+  ALLOW_JS && "--allowJs",
   "--noWatch",
   "--findRelatedTests",
   "--passWithNoTests"
 ]);
-const lintScriptOptions = arrayToString(["--allowJs", "--fix"]);
+const lintScriptOptions = arrayToString([ALLOW_JS && "--allowJs", "--fix"]);
 
 const lintStagedConfig = {
   concurrent: false,

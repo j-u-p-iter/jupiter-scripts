@@ -27,7 +27,13 @@ const pathToLintStagedConfig = useBuiltInConfig
 const { signal, status: statusResult } = spawn.sync(
   resolveBin("lint-staged"),
   [...pathToLintStagedConfig, ...filterArgs(args, ["allowJs"])],
-  { stdio: "inherit" }
+  {
+    stdio: "inherit",
+    env: {
+      ...process.env,
+      ALLOW_JS: args.includes('--allowJs'),
+    },
+  }
 );
 
 if (signal) {
