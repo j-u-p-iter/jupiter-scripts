@@ -219,7 +219,9 @@ const filterArgs = (args, filterFrom) => {
         ([optionName, optionValue]) =>
           !["_", ...filterFrom].includes(optionName)
       )
-      .map(([optionName, optionValue]) => [`--${optionName}`, optionValue])
+      .map((
+      [optionName, optionValue]) => [`--${optionName}`, optionValue]
+      )
   ).filter(filterBoolean);
 };
 
