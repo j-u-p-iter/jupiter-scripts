@@ -27,7 +27,9 @@ const resolvePath = (...paths) => path.resolve(...paths);
 const resolveJupiterScripts = () =>
   packageData.name === "@j.u.p.iter/jupiter-scripts"
     ? require.resolve("../").replace(process.cwd(), ".")
-    : resolveBin("@j.u.p.iter/jupiter-scripts");
+    : resolveBin("@j.u.p.iter/jupiter-scripts", {
+        executable: "jupiter-scripts"
+      });
 
 const arrayToString = array => array.filter(Boolean).join(" ");
 

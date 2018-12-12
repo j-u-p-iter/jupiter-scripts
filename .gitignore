@@ -2,3 +2,4 @@ node_modules
 dist
 coverage
 todo.txt
+yarn-error.log
