@@ -6,6 +6,7 @@
 //   - find module/project config file (for example, .babelrc)
 
 const fs = require("fs");
+
 const path = require("path");
 const readPkgUp = require("read-pkg-up");
 const arrify = require("arrify");
