@@ -1,11 +1,11 @@
-const path = require('path');
-const bootstrap = require('commitizen/dist/cli/git-cz').bootstrap;
+const path = require("path");
+const bootstrap = require("commitizen/dist/cli/git-cz").bootstrap;
 
-const { resolveModulePath } = require('../utils');
+const { resolveModulePath } = require("../utils");
 
 bootstrap({
-  cliPath: resolveModulePath('commitizen'),
+  cliPath: resolveModulePath("commitizen"),
   config: {
-    path: 'cz-conventional-changelog',
-  },
+    path: "cz-conventional-changelog"
+  }
 });

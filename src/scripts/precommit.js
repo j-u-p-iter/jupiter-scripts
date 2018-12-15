@@ -7,7 +7,7 @@ const {
   resolvePath,
   filterArgs,
   setupTSConfig,
-  resolveJupiterScripts,
+  resolveJupiterScripts
 } = require("../utils");
 
 const args = process.argv.slice(2);
@@ -40,12 +40,9 @@ const { signal, status: statusResult } = spawn.sync(
 if (signal) {
   handleSpawnSignal("lint-staged", signal);
 } else {
-  const { signal, status: statusResult } = spawn.sync(
+  spawn.sync(
     `${resolveJupiterScripts()}`,
-    [
-      'commit',
-      ...filterArgs(args, ["allowJs"])
-    ],
+    ["commit", ...filterArgs(args, ["allowJs"])],
     { stdio: "inherit" }
   );
 }

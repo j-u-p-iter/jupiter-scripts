@@ -7,7 +7,7 @@ const rimraf = require("rimraf");
 
 const {
   hasFile,
-  hasPkgProp,
+  asPkgProp,
   fromRoot,
   resolveBin,
   handleSpawnSignal,

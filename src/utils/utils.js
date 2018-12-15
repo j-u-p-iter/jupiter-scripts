@@ -236,6 +236,24 @@ const resolveModulePath = () => {
   return moduleRootDirectoryPath;
 };
 
+const getConcurrentlyArgs = scripts => {
+  const scriptsObject = Object.entries(scripts).reduce(
+    (allScripts, [scriptName, scriptValue]) => {
+      if (scriptValue) {
+        allScripts[scriptName] = scriptValue;
+      }
+
+      return allScripts;
+    },
+    {}
+  );
+
+  return Object.values(scriptsObject);
+};
+
+const ifTrue = (condition, trueResult, falseResult = null) =>
+  condition ? trueResult : falseResult;
+
 module.exports = {
   appDirectory,
   parseEnv,
@@ -257,5 +275,7 @@ module.exports = {
   resolvePath,
   arrayToString,
   resolveJupiterScripts,
-  resolveModulePath
+  resolveModulePath,
+  getConcurrentlyArgs,
+  ifTrue
 };
