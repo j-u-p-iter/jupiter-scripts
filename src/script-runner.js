@@ -24,7 +24,11 @@ function spawnScript() {
   }
 
   const { signal, status } = spawn.sync(executor, [mainScriptPath, ...args], {
-    stdio: "inherit"
+    stdio: "inherit",
+    env: {
+      ...process.env,
+      [`SCRIPTS_${scriptName.toUpperCase()}`]: true,
+    },
   });
 
   if (signal) {

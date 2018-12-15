@@ -5,21 +5,24 @@ const {
   ifScript,
   resolveBin,
   getConcurrentlyArgs,
-  ifTrue,
+  ifTrue
 } = require("../utils");
 
-const notPrecommitScript = !parseEnv("SCRIPTS_PRE-COMMIT", false);
+const notPrecommitScript = !parseEnv("SCRIPTS_PRECOMMIT", false);
 
 const validationScripts = {
   build: "yarn run build",
   lint: ifTrue(notPrecommitScript, "yarn run lint"),
-  test: ifTrue(notPrecommitScript, "yarn run test --noWatch --silent --coverage --no-cache"),
+  test: ifTrue(
+    notPrecommitScript,
+    "yarn run test --noWatch --silent --coverage --no-cache"
+  )
 };
 
 const { signal, status } = spawn.sync(
   resolveBin("concurrently"),
   getConcurrentlyArgs(validationScripts),
-  { stdio: "inherit" }
+  { stdio: "inherit", env: process.env }
 );
 
 if (signal) {

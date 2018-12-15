@@ -42,6 +42,12 @@ if (signal) {
 } else {
   spawn.sync(
     `${resolveJupiterScripts()}`,
+    ["validate", ...filterArgs(args, ["allowJs"])],
+    { stdio: "inherit", env: process.env }
+  );
+
+  spawn.sync(
+    `${resolveJupiterScripts()}`,
     ["commit", ...filterArgs(args, ["allowJs"])],
     { stdio: "inherit" }
   );
