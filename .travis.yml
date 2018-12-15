@@ -14,9 +14,9 @@ node_js:
 jobs:
   include:
     - stage: validate
-      script: npm run validate
+      script: yarn run validate
     - stage: deploy
-      script: npm run deploy
+      script: yarn run deploy
 stages:
   validate
   deploy
