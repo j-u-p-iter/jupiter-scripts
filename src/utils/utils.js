@@ -225,6 +225,17 @@ const filterArgs = (args, filterFrom) => {
   ).filter(filterBoolean);
 };
 
+const resolveModulePath = () => {
+  // index.js can be absent in package
+  // but package.json is always present
+  // So, to detect path to module (resolve it)
+  // we're searching package.json
+  const modulePackagePath = require.resolve("commitizen/package.json");
+  const moduleRootDirectoryPath = path.dirname(modulePackagePath);
+
+  return moduleRootDirectoryPath;
+};
+
 module.exports = {
   appDirectory,
   parseEnv,
@@ -245,5 +256,6 @@ module.exports = {
   parseArgs,
   resolvePath,
   arrayToString,
-  resolveJupiterScripts
+  resolveJupiterScripts,
+  resolveModulePath
 };
