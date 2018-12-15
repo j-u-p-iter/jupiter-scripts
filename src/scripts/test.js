@@ -10,6 +10,8 @@ const {
   arrayToString
 } = require("../utils");
 
+console.log('## Test Script ##');
+
 const here = (...props) => resolvePath(__dirname, ...props);
 
 const args = process.argv.slice(2);
@@ -36,5 +38,7 @@ const jestOptions = arrayToString([
   ...filterArgs(args, ["allowJs", "noWatch"])
 ]);
 // ## Options we pass to bin end
+
+console.log(jestOptions);
 
 jest.run(jestOptions);
