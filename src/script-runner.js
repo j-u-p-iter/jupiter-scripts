@@ -27,8 +27,8 @@ function spawnScript() {
     stdio: "inherit",
     env: {
       ...process.env,
-      [`SCRIPTS_${scriptName.toUpperCase()}`]: true,
-    },
+      [`SCRIPTS_${scriptName.toUpperCase()}`]: true
+    }
   });
 
   if (signal) {
