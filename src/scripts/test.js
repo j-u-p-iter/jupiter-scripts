@@ -46,7 +46,10 @@ const jestOptions = arrayToString([
 
 console.log('## Test Script 4 ##');
 
-console.log(jestOptions);
+console.log('filteredArgs')
+console.log(...filterArgs(args, ["allowJs", "noWatch"]))
+console.log('args')
+console.log(args);
 
 console.log('## Test Script 5 ##');
 
