@@ -15,7 +15,7 @@ const lintScriptOptions = arrayToString([ALLOW_JS && "--allowJs", "--fix"]);
 const lintStagedConfig = {
   concurrent: false,
   linters: {
-    "**/*.+(js|json|css|ts|tsx)": [
+    "**/*.+(css|js|ts|tsx)": [
       `${jupiterScripts} lint ${lintScriptOptions}`,
       `${jupiterScripts} test ${testScriptOptions}`,
       "git add"
