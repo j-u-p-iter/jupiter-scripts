@@ -44,6 +44,10 @@ const jestOptions = arrayToString([
 ]);
 // ## Options we pass to bin end
 
+console.log('## Test Script 4 ##');
+
 console.log(jestOptions);
+
+console.log('## Test Script 5 ##');
 
 jest.run(jestOptions);
