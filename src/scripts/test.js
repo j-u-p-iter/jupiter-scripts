@@ -16,12 +16,15 @@ const here = (...props) => resolvePath(__dirname, ...props);
 
 const args = process.argv.slice(2);
 
+console.log('## Test Script 1 ##');
 setupTSConfig();
 
 // ## Options we pass to bin start
 const isCoverage = args.includes("--coverage");
 const noWatch = args.includes("--noWatch");
 const watch = !isCI && !isCoverage && !noWatch ? "--watch" : "";
+
+console.log('## Test Script 2 ##');
 
 const useBuiltinConfig =
   !args.includes("--config") &&
@@ -31,6 +34,8 @@ const useBuiltinConfig =
 const config = useBuiltinConfig
   ? `--config ${here("../config/jest.config.js")}`
   : "";
+
+console.log('## Test Script 3 ##');
 
 const jestOptions = arrayToString([
   config,
