@@ -14,8 +14,9 @@
     "test": "node src test --allowJs",
     "lint": "node src lint --allowJs --format codeFrame",
     "lint:fix": "yarn run lint --fix",
+    "commit": "node src precommit --allowJs",
     "validate": "node src validate",
-    "commit": "node src precommit --allowJs"
+    "deploy": "node src deploy"
   },
   "husky": {
     "hooks": {
