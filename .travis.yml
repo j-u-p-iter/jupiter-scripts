@@ -9,9 +9,9 @@ node_js:
 jobs:
   include:
     - stage: validate
-      script: npm run validate
+      script: node src validate
     - stage: deploy
-      script: npm run deploy
+      script: node src deploy
 stages:
   validate
   deploy
