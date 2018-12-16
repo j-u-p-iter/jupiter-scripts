@@ -1,6 +1,6 @@
 {
   "name": "@j.u.p.iter/jupiter-scripts",
-  "version": "1.0.5",
+  "version": "0.0.0-semantically-released",
   "description": "Handy-dandy scripts ;)",
   "engines": {
     "node": ">=8",
