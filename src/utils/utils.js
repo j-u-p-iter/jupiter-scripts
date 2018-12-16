@@ -105,15 +105,15 @@ const withDefault = curry((defaultValue, data) => {
   return notEmpty ? data : defaultValue;
 });
 
-const withObjectByDefault = withDefault({});
+const withArrayByDefault = withDefault([]);
 
 // For umd we need to have dependencies included in bundle,
 // Cause we don't have the ability to install dependencies
 // With npm and package.json for such modules
 const generateExternals = moduleFormat =>
   moduleFormat === "umd"
-    ? withObjectByDefault(keys(get(packageData, "peerDependencies")))
-    : withObjectByDefault(
+    ? withArrayByDefault(keys(get(packageData, "peerDependencies")))
+    : withArrayByDefault(
         keys(get(packageData, "dependencies")).concat(
           keys(get(packageData, "peerDependencies"))
         )
