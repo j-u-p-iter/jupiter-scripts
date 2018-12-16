@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/j-u-p-iter/scripts.git"
+    "url": "git+https://github.com/j-u-p-iter/jupiter-scripts.git"
   },
   "files": [
     "dist"
@@ -33,9 +33,9 @@
   "author": "Leontyev Kirill <pn79122821224@gmail.com> (j.u.p.iter)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/j-u-p-iter/scripts/issues"
+    "url": "https://github.com/j-u-p-iter/jupiter-scripts/issues"
   },
-  "homepage": "https://github.com/j-u-p-iter/scripts#readme",
+  "homepage": "https://github.com/j-u-p-iter/jupiter-scripts#readme",
   "dependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
