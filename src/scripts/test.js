@@ -37,4 +37,4 @@ const jestOptions = arrayToString([
 ]);
 // ## Options we pass to bin end
 
-jest.run(jestOptions);
+jest.run();
