@@ -10,9 +10,11 @@ jobs:
   include:
     - stage: validate
       script: node src validate
+    - stage: set_access
+      script: chmod +x dist/lib/index.js
     - stage: deploy
       script: node src deploy
 stages:
   validate
+  set_access
   deploy
-
