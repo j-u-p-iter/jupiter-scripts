@@ -10,11 +10,9 @@ jobs:
   include:
     - stage: validate
       script: node src validate
-    - stage: set_access
-      script: chmod +x dist/lib/index.js
     - stage: deploy
-      script: node src deploy
+      script: yarn run build
+      after_success: chmod +x dist/lib/index.js && node src deploy
 stages:
   validate
-  set_access
   deploy
