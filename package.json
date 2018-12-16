@@ -16,11 +16,6 @@
     "lint:fix": "yarn run lint --fix",
     "commit": "node src precommit --allowJs"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "node src pre-commit --allowJs"
-    }
-  },
   "repository": "git@github.com:j-u-p-iter/jupiter-scripts.git",
   "files": [
     "dist"
