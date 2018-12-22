@@ -2,6 +2,8 @@
 // he needs node version >= 8, cause we don't run
 // not bundled scripts
 
+const MINOR_SUPPORTED_NODE_VERSION = 8;
+
 const checkNodeVersion = () => {
   const isScriptRanInOriginalPackage = () => {
     // process.cwd. path to current working directory (dicrectory, where we execute script)
@@ -13,7 +15,7 @@ const checkNodeVersion = () => {
   const isIncorrectNodeVersion = () => {
     const nodeVersion = process.version[1];
 
-    return Number(nodeVersion) < 8;
+    return Number(nodeVersion) < MINOR_SUPPORTED_NODE_VERSION;
   };
 
   if (isScriptRanInOriginalPackage() && isIncorrectNodeVersion()) {
