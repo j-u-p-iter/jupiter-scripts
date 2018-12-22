@@ -13,11 +13,11 @@
     "object-literal-sort-keys": false,
     "no-empty": false
   },
-  "linterOptions": {
+  "linterOptions":{
     "exclude": [
       "*.json",
       "**/*.json",
-      "coverage/**/*.js"
+      "../coverage/**/*.js"
     ]
   }
 }
