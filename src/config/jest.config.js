@@ -7,7 +7,7 @@ const jestConfig = {
   transform: {
     ".(ts|tsx)": "ts-jest"
   } /* A map from regular expressions to paths to transformers. A transformer is a module that provides a synchronous function for transforming source files. */,
-  testEnvironment: ifHasAnyDependency(["react", "webpack"]) ? "jsdom" : "node", //The test environment that will be used for testing. The default environment in Jest is a browser-like environment through jsdom. If you are building a node service, you can use the node option to use a node-like environment instead.
+  testEnvironment: ifHasAnyDependency(["react", "webpack"], "jsdom", "node"), //The test environment that will be used for testing. The default environment in Jest is a browser-like environment through jsdom. If you are building a node service, you can use the node option to use a node-like environment instead.
   moduleFileExtensions: ["ts", "tsx", "js", "json"], // An array of file extensions your modules use. If you require modules without specifying a file extension, these are the extensions Jest will look for.
   testRegex: "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$", // The pattern Jest uses to detect test files.
   coverageThreshold: {
