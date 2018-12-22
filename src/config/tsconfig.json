@@ -16,7 +16,8 @@
     "allowJs": true,
     "declaration": false,
     "outDir": "/Users/kirillleontev/Sites/scripts/dist/lib",
-    "jsx": "react"
+    "jsx": "react",
+    "esModuleInterop": true
   },
   "include": [
     "/Users/kirillleontev/Sites/scripts/src"
