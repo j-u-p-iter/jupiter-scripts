@@ -20,7 +20,7 @@ const jestConfig = {
   }, // This will be used to configure minimum threshold enforcement for coverage results.
   collectCoverage: true, // Indicates whether the coverage information should be collected while executing the test.
   collectCoverageFrom: [
-    "**/*.{js,ts}",
+    "**/*.{js,ts,tsx}",
     "!**/node_modules/**",
     "!**/coverage/**"
   ], // An array of glob patterns indicating a set of files for which coverage information should be collected.
