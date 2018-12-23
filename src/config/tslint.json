@@ -5,13 +5,15 @@
     "prettier": true,
     "no-console": false,
     "object-literal-sort-keys": "false",
-    "no-empty": false
+    "no-empty": false,
+    "only-arrow-functions": false
   },
   "jsRules": {
     "prettier": true,
     "no-console": false,
     "object-literal-sort-keys": false,
-    "no-empty": false
+    "no-empty": false,
+    "only-arrow-functions": false
   },
   "linterOptions":{
     "exclude": [
