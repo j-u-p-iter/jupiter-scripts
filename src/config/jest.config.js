@@ -12,10 +12,10 @@ const jestConfig = {
   testRegex: "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$", // The pattern Jest uses to detect test files.
   coverageThreshold: {
     global: {
-      branches: 90,
-      functions: 95,
-      lines: 95,
-      statements: 95
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100
     }
   }, // This will be used to configure minimum threshold enforcement for coverage results.
   collectCoverage: true, // Indicates whether the coverage information should be collected while executing the test.
