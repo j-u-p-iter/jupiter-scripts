@@ -17,7 +17,9 @@
     "declaration": false,
     "outDir": "/Users/kirillleontev/Sites/scripts/dist/lib",
     "jsx": "react",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": [
     "/Users/kirillleontev/Sites/scripts/src"
