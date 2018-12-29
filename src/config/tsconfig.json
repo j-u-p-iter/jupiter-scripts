@@ -15,14 +15,14 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "declaration": false,
-    "outDir": "/Users/kirillleontev/Sites/scripts/dist/lib",
+    "outDir": "/Users/kirillleontyev/Sites/jupiter-scripts/dist/lib",
     "jsx": "react",
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
   "include": [
-    "/Users/kirillleontev/Sites/scripts/src"
+    "/Users/kirillleontyev/Sites/jupiter-scripts/src"
   ],
   "exclude": [
     "coverage",

@@ -6,14 +6,16 @@
     "no-console": false,
     "object-literal-sort-keys": "false",
     "no-empty": false,
-    "only-arrow-functions": false
+    "only-arrow-functions": false,
+    "object-literal-sort-keys": false
   },
   "jsRules": {
     "prettier": true,
     "no-console": false,
     "object-literal-sort-keys": false,
     "no-empty": false,
-    "only-arrow-functions": false
+    "only-arrow-functions": false,
+    "object-literal-sort-keys": false
   },
   "linterOptions":{
     "exclude": [
