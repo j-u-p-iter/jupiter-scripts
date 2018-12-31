@@ -10,7 +10,7 @@
       "dom"
     ],
     "strict": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
