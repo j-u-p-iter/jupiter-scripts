@@ -7,7 +7,8 @@
     "object-literal-sort-keys": "false",
     "no-empty": false,
     "only-arrow-functions": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "member-ordering": false
   },
   "jsRules": {
     "prettier": true,
@@ -15,7 +16,8 @@
     "object-literal-sort-keys": false,
     "no-empty": false,
     "only-arrow-functions": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "member-ordering": false
   },
   "linterOptions":{
     "exclude": [
