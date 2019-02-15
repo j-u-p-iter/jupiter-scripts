@@ -9,6 +9,7 @@
     "only-arrow-functions": false,
     "object-literal-sort-keys": false,
     "member-ordering": false,
+    "member-access": false,
     "interface-name": [true, "never-prefix"]
   },
   "jsRules": {
@@ -18,7 +19,8 @@
     "no-empty": false,
     "only-arrow-functions": false,
     "object-literal-sort-keys": false,
-    "member-ordering": false
+    "member-ordering": false,
+    "member-access": false
   },
   "linterOptions":{
     "exclude": [
