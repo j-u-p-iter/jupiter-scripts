@@ -9,13 +9,12 @@
       "es2017",
       "dom"
     ],
-    "strict": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "allowJs": true,
     "declaration": false,
-    "outDir": "/Users/kirillleontyev/Sites/jupiter-scripts/dist/lib",
+    "outDir": "/home/j-u-p-iter/Sites/jupiter-scripts/dist/lib",
     "jsx": "react",
     "esModuleInterop": true,
     "noUnusedLocals": true,
@@ -23,7 +22,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "/Users/kirillleontyev/Sites/jupiter-scripts/src"
+    "/home/j-u-p-iter/Sites/jupiter-scripts/src"
   ],
   "exclude": [
     "coverage",
