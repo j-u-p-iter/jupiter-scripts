@@ -251,8 +251,8 @@ const getConcurrentlyArgs = scripts => {
   return Object.values(scriptsObject);
 };
 
-const ifTrue = (condition, trueResult, falseResult = null) =>
-  condition ? trueResult : falseResult;
+const ifTrue = (cond, trueResult, falseResult = null) =>
+  cond ? trueResult : falseResult;
 
 module.exports = {
   appDirectory,
