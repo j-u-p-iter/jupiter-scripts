@@ -56,9 +56,18 @@ This will allow your to fix most lint issues you currently have automatically. S
 
 Now you can add your changes and commit them. We commit all changes also with script. You'll see some prompt you should pass before your commit will be created.
 
+### Configure https://travis-ci.com
+
+- You should give travis-ci.com knowledge about your repo. This way travis-ci.com will start listening changes in your master branch and start ci as soon as changes in master branch appears.
+- In settings section for your new repo you should add GH_TOKEN, NPM_TOKEN. It's necessary to pass authentication on Github and npm.
+
+
 ### Push your changes to master branch
 
 You finish with your package. You can push them into master branch. By default we run CI only if changes appear in master branch. You can configure this stuff in .travis.yml (one of the file, that sits in boilerplate code), but in most cases master branch is the only branch you need and you don't need to do these changes.
 
-### Add your new repo to https://travis-ci.com
+### Control CI
 
+Wait untill CI pass of fails. If it fails - do necessary changes and push them to master branch again.
+
+And that's it. After your code pass CI - your package will be published on npm automatically.
