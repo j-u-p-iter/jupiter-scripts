@@ -79,3 +79,5 @@ const runScript = () => {
 module.exports = {
   runScript
 };
+
+export {};

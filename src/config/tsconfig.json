@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "allowJs": true,
     "declaration": false,
-    "outDir": "/home/j-u-p-iter/Sites/jupiter-scripts/dist/lib",
+    "outDir": "/Users/kirillleontyev/Sites/jupiter-scripts/dist/lib",
     "jsx": "react",
     "esModuleInterop": true,
     "noUnusedLocals": true,
@@ -22,7 +22,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "/home/j-u-p-iter/Sites/jupiter-scripts/src"
+    "/Users/kirillleontyev/Sites/jupiter-scripts/src"
   ],
   "exclude": [
     "coverage",

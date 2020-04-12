@@ -1,15 +1,20 @@
 // if developer run scripts inside scripts repo
 // he needs node version >= 8, cause we don't run
 // not bundled scripts
+const fs = require("fs");
 
 const MINOR_SUPPORTED_NODE_VERSION = 8;
 
 const checkNodeVersion = () => {
   const isScriptRanInOriginalPackage = () => {
-    // process.cwd. path to current working directory (dicrectory, where we execute script)
-    const packageInfo = require(`${process.cwd()}/package.json`);
+    const pathToPackageJSON = `${process.cwd()}/package.json`;
+    if (fs.existsSync(pathToPackageJSON)) {
+      const packageInfo = require(pathToPackageJSON);
 
-    return packageInfo.name === "@j.u.p.iter/scripts";
+      return packageInfo.name === "@j.u.p.iter/scripts";
+    }
+
+    return false;
   };
 
   const isIncorrectNodeVersion = () => {

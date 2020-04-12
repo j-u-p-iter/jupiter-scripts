@@ -47,9 +47,9 @@ const getModuleName = (moduleFormat, minify) =>
 const getModulePath = (moduleFormat, minify) =>
   `dist/lib/${getModuleName(moduleFormat, minify)}`;
 
-const appDirectory = path.dirname(pkgPath);
+const getAppDirectory = () => path.dirname(pkgPath);
 
-const fromRoot = (...p) => path.join(appDirectory, ...p);
+const fromRoot = (...p) => path.join(getAppDirectory(), ...p);
 
 const hasFile = (...p) => fs.existsSync(fromRoot(...p));
 
@@ -255,7 +255,7 @@ const ifTrue = (cond, trueResult, falseResult = null) =>
   cond ? trueResult : falseResult;
 
 module.exports = {
-  appDirectory,
+  getAppDirectory,
   parseEnv,
   ifHasAnyDependency,
   handleSpawnSignal,
