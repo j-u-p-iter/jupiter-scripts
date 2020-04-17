@@ -1,6 +1,7 @@
 const path = require("path");
 const spawn = require("cross-spawn");
 const glob = require("glob");
+const yargs = require("yargs");
 
 const { handleSpawnSignal } = require("./utils");
 
@@ -11,6 +12,15 @@ const { handleSpawnSignal } = require("./utils");
 //
 // So, executor runs binary, binary runs script
 const [executor, bin, scriptName, ...args] = process.argv;
+
+/* tslint:disable:no-unused-expression */
+yargs
+  .usage("$0 [commands] [--flags]")
+  .command("build", "build module")
+  .command("test", "run tests")
+  .command("lint", "lint code")
+  .demandCommand(1, "Available commands: ...")
+  .help().argv;
 
 function spawnScript() {
   const relativeScriptPath = path.join(__dirname, "scripts", scriptName);

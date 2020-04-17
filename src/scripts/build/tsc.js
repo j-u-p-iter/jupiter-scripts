@@ -35,6 +35,8 @@ if (useBuiltinTSConfig) {
   setupTSConfig();
 }
 
+console.log(getPathToBuiltinTSConfig());
+
 const tsconfig = useBuiltinTSConfig
   ? ["--project", getPathToBuiltinTSConfig()]
   : [];

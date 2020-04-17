@@ -1,48 +1,46 @@
-const CLI = require("clui");
-const Conf = require("conf");
+const { Octokit } = require("@octokit/rest");
 const to = require("await-to-js").default;
-const { createBasicAuth } = require("@octokit/auth-basic");
 
-const { askGithubCredentials } = require("./prompt");
+const storage = require("./localStorage");
+const dialog = require("./dialog");
+const ui = require("./ui");
 
-const Spinner = CLI.Spinner;
-const config = new Conf({
-  projectName: "ginit"
-});
+let octokit;
 
-type GetToken = () => string;
-const getToken: GetToken = () => {
-  return config.get("github.token");
+const getInstance = () => {
+  if (octokit) {
+    return octokit;
+  }
+
+  const accessToken = storage.get("accessToken");
+
+  octokit = new Octokit({ auth: accessToken });
+
+  return octokit;
 };
 
-const sendRequestToGetAccessToken = async () => {
-  const { username, password } = await askGithubCredentials();
+const createRemoteRepo = async () => {
+  const repoDetails = await dialog.askRepoDetails();
 
-  const authStatus = new Spinner("Authenticating you, please wait...");
+  const data = {
+    name: repoDetails.name,
+    description: repoDetails.description,
+    private: repoDetails.visibility === "private"
+  };
 
-  authStatus.start();
+  const closeRepoSpinner = ui.showSpinner("Creating remote repository...");
 
-  const auth = createBasicAuth({
-    username,
-    password,
-    async on2Fa() {},
-    token: {
-      scopes: ["user", "public_repo", "repo", "repo:status"],
-      note: "ginit, the command-line tool for initializing Git repos"
-    }
-  });
+  const [, response] = await to(
+    getInstance().repos.createForAuthenticatedUser(data)
+  );
 
-  const [error, response] = await to(auth());
+  closeRepoSpinner();
 
-  console.log(error);
-  console.log(response);
-
-  authStatus.stop();
+  return response.data;
 };
 
 module.exports = {
-  getToken,
-  sendRequestToGetAccessToken
+  createRemoteRepo
 };
 
 export {};

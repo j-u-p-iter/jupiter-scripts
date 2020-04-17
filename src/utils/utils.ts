@@ -14,11 +14,9 @@ const { has, curry, get, keys, isArray } = require("lodash");
 const which = require("which");
 const yargsParser = require("yargs-parser");
 const editJsonFile = require("edit-json-file");
-const { mapKeys, flatten } = require("lodash");
+const { flatten } = require("lodash");
 
 const { TYPESCRIPT_CONFIG_NAME } = require("../config/common");
-
-const POSSIBLE_MODULES_FORMATS = ["main", "module", "umd:main"];
 
 const { pkg: packageData, path: pkgPath } = readPkgUp.sync();
 
@@ -33,11 +31,6 @@ const resolveJupiterScripts = () =>
       });
 
 const arrayToString = array => array.filter(Boolean).join(" ");
-
-const modulesFormats = modulesToBuild =>
-  pick(packageData, POSSIBLE_MODULES_FORMATS).map(
-    scriptName => scriptName.split(".").reverse()[1]
-  );
 
 const getModuleName = (moduleFormat, minify) =>
   `${packageData.name.replace("@j.u.p.iter/", "")}.${moduleFormat}${
@@ -58,11 +51,6 @@ const hasPkgProp = props => arrify(props).some(prop => has(packageData, prop));
 const hasPkgSubProp = curry((pkgProp, subProps) =>
   hasPkgProp(arrify(subProps).map(subProp => `${pkgProp}.${subProp}`))
 );
-
-const ifHasPkgSubProp = pkgProp => (subProps, resultOnTrue, resultOnFalse) =>
-  hasPkgSubProp(pkgProp, subProps) ? resultOnTrue : resultOnFalse;
-
-const hasScript = hasPkgSubProp("scripts");
 
 const hasPeerDependency = hasPkgSubProp("peerDependencies");
 const hasDependency = hasPkgSubProp("dependencies");
@@ -217,10 +205,7 @@ const filterArgs = (args, filterFrom) => {
 
   return flatten(
     Object.entries(parsedArgs)
-      .filter(
-        ([optionName, optionValue]) =>
-          !["_", ...filterFrom].includes(optionName)
-      )
+      .filter(([optionName]) => !["_", ...filterFrom].includes(optionName))
       .map(([optionName, optionValue]) => [`--${optionName}`, optionValue])
   ).filter(filterBoolean);
 };
@@ -279,3 +264,5 @@ module.exports = {
   getConcurrentlyArgs,
   ifTrue
 };
+
+export {};

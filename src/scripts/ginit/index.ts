@@ -1,16 +1,21 @@
-const chalk = require("chalk");
-
-const { doesDirectoryExist } = require("./files");
-const { sendRequestToGetAccessToken } = require("./github");
-
-if (doesDirectoryExist(".git")) {
-  console.log(chalk.red("Already a Git repository!"));
-
-  process.exit();
-}
+const authClient = require("./authClient");
+const utils = require("./utils");
+const ui = require("./ui");
+const github = require("./github");
+const repo = require("./repo");
 
 const runGinit = async () => {
-  await sendRequestToGetAccessToken();
+  ui.showTitle();
+
+  utils.checkPresenceOfGit();
+
+  await authClient.getAccessToken();
+
+  const { ssh_url: repoUrl } = await github.createRemoteRepo();
+
+  await repo.createGitignore();
+
+  repo.setUpRepo(repoUrl);
 };
 
 runGinit();
