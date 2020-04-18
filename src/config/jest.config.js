@@ -32,5 +32,3 @@ const jestConfig = {
 };
 
 module.exports = jestConfig;
-
-export {};
