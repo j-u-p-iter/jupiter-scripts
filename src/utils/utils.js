@@ -46,7 +46,8 @@ const fromRoot = (...p) => path.join(getAppDirectory(), ...p);
 
 const hasFile = (...p) => fs.existsSync(fromRoot(...p));
 
-const hasPkgProp = props => arrify(props).some(prop => has(packageData, prop));
+const hasPkgProp = props =>
+  arrify(props).some(prop => has(packageData, prop));
 
 const hasPkgSubProp = curry((pkgProp, subProps) =>
   hasPkgProp(arrify(subProps).map(subProp => `${pkgProp}.${subProp}`))
@@ -164,7 +165,9 @@ const handleSpawnSignal = (scriptName, signal) => {
 const hasTSConfig = () => hasFile("tsconfig.json");
 
 const getPathToTSConfig = () =>
-  hasTSConfig() ? fromRoot(TYPESCRIPT_CONFIG_NAME) : getPathToBuiltinTSConfig();
+  hasTSConfig()
+    ? fromRoot(TYPESCRIPT_CONFIG_NAME)
+    : getPathToBuiltinTSConfig();
 
 const getPathToBuiltinTSConfig = () =>
   path.resolve(__dirname, `../config/${TYPESCRIPT_CONFIG_NAME}`);
@@ -264,5 +267,3 @@ module.exports = {
   getConcurrentlyArgs,
   ifTrue
 };
-
-export {};

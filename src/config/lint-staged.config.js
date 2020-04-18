@@ -1,4 +1,8 @@
-const { resolveJupiterScripts, arrayToString, parseEnv } = require("../utils");
+const {
+  resolveJupiterScripts,
+  arrayToString,
+  parseEnv
+} = require("../utils");
 
 const jupiterScripts = resolveJupiterScripts();
 

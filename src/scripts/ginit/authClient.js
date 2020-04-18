@@ -48,7 +48,7 @@ const sendRequestToGetAccessToken = async code => {
   );
 };
 
-const executeAuthFlow: () => Promise<{ accessToken: string }> = () => {
+const executeAuthFlow = () => {
   return new Promise(async (resolve, reject) => {
     const server = hapi.server({
       port: serverPort,
@@ -107,5 +107,3 @@ const getAccessToken = async () => {
 module.exports = {
   getAccessToken
 };
-
-export {};

@@ -1,16 +1,12 @@
-const path = require("path");
 const rollupTypeScript = require("rollup-plugin-typescript2");
 const rollupCommonJS = require("rollup-plugin-commonjs");
 const rollupNodeResolve = require("rollup-plugin-node-resolve");
 const rollupJSON = require("rollup-plugin-json");
 const rollupNodeBuiltins = require("rollup-plugin-node-builtins");
 const tempDir = require("temp-dir");
-const editJsonFile = require("edit-json-file");
 
 const {
   parseEnv,
-  hasFile,
-  fromRoot,
   getModuleName,
   getModulePath,
   generateExternals,
@@ -51,3 +47,5 @@ module.exports = {
     rollupNodeBuiltins()
   ]
 };
+
+export {};

@@ -42,5 +42,3 @@ const createRemoteRepo = async () => {
 module.exports = {
   createRemoteRepo
 };
-
-export {};

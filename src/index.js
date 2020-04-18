@@ -5,4 +5,3 @@ const { runScript } = require("./script-runner");
 
 checkNodeVersion();
 runScript();
-export {};

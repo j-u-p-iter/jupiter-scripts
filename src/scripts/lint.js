@@ -3,7 +3,6 @@
 require("../config/tslint.json");
 
 const spawn = require("cross-spawn");
-const yargsParser = require("yargs-parser");
 
 const {
   hasFile,
@@ -34,7 +33,11 @@ const pathToTSConfig = useBuiltinTSConfig
 
 const { signal, status: statusResult } = spawn.sync(
   resolveBin("tslint"),
-  [...pathToTSLintConfig, ...pathToTSConfig, ...filterArgs(args, ["allowJs"])],
+  [
+    ...pathToTSLintConfig,
+    ...pathToTSConfig,
+    ...filterArgs(args, ["allowJs"])
+  ],
   { stdio: "inherit" }
 );
 

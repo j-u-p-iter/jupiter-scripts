@@ -15,5 +15,3 @@ const githubOAuth = {
 module.exports = {
   githubOAuth
 };
-
-export {};

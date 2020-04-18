@@ -15,9 +15,7 @@ const runGinit = async () => {
 
   await repo.createGitignore();
 
-  repo.setUpRepo(repoUrl);
+  await repo.setUpRepo(repoUrl);
 };
 
 runGinit();
-
-export {};

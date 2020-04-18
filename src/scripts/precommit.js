@@ -7,7 +7,8 @@ const {
   resolvePath,
   filterArgs,
   setupTSConfig,
-  resolveJupiterScripts
+  resolveJupiterScripts,
+  handleSpawnSignal
 } = require("../utils");
 
 const args = process.argv.slice(2);
@@ -25,7 +26,7 @@ const pathToLintStagedConfig = useBuiltInConfig
   ? ["--config", resolvePath(__dirname, "../config/lint-staged.config.js")]
   : [];
 
-const { signal, status: statusResult } = spawn.sync(
+const { signal } = spawn.sync(
   resolveBin("lint-staged"),
   [...pathToLintStagedConfig, ...filterArgs(args, ["allowJs"])],
   {

@@ -11,13 +11,13 @@
   },
   "scripts": {
     "tsnode": "ts-node -P ./src/config/tsconfig.json",
-    "build": "ts-node src build --cli --allowJs",
+    "build": "node src build --cli --allowJS",
     "build:watch": "watch 'yarn build && yarn changePermission' ./src",
     "changePermission": "chmod +x dist/lib/index.js",
-    "test": "ts-node src test --allowJs",
-    "lint": "ts-node src lint --allowJs --format codeFrame --project tsconfig.json",
+    "test": "node src test --allowJs",
+    "lint": "node src lint --format codeFrame --project tsconfig.json",
     "lint:fix": "yarn run lint --fix",
-    "commit": "ts-node src precommit --allowJs"
+    "commit": "node src precommit"
   },
   "repository": "git@github.com:j-u-p-iter/jupiter-scripts.git",
   "files": [
@@ -90,6 +90,7 @@
     "yargs-parser": "^10.1.0"
   },
   "devDependencies": {
+    "copyfiles": "^2.2.0",
     "jest-in-case": "^1.0.2"
   }
 }

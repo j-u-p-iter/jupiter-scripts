@@ -11,7 +11,9 @@ const askRepoDetails = () => {
       message: "Enter a name for the repository:",
       default: defaultRepoName || "super-repo",
       validate: value => {
-        return value.length ? true : "Please enter a name for the repository.";
+        return value.length
+          ? true
+          : "Please enter a name for the repository.";
       }
     },
     {
@@ -50,5 +52,3 @@ module.exports = {
   askRepoDetails,
   askFilesToIgnore
 };
-
-export {};

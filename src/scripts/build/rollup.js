@@ -56,7 +56,6 @@ const getScript = env =>
 const getScripts = () =>
   formats.map(format => {
     const [formatName, minify = false] = format.split(".");
-    const sourceMap = formatName === "umd" ? "--sourcemap" : "";
     const buildMinify = Boolean(minify);
     const env = [
       `BUILD_FORMAT=${formatName}`,

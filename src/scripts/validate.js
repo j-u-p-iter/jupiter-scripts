@@ -2,7 +2,6 @@ const spawn = require("cross-spawn");
 
 const {
   parseEnv,
-  ifScript,
   resolveBin,
   getConcurrentlyArgs,
   ifTrue

@@ -1,4 +1,3 @@
-const path = require("path");
 const bootstrap = require("commitizen/dist/cli/git-cz").bootstrap;
 
 const { resolveModulePath } = require("../utils");
