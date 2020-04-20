@@ -12,14 +12,14 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "declaration": true,
+    "declaration": false,
     "outDir": "/Users/j.u.p.iter/projects/jupiter-scripts/dist/lib",
     "jsx": "react",
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
-    "declarationDir": "/Users/j.u.p.iter/projects/jupiter-scripts/dist/types"
+    "allowJs": true
   },
   "include": [
     "/Users/j.u.p.iter/projects/jupiter-scripts/src"
