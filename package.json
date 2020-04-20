@@ -15,8 +15,8 @@
     "build:watch": "watch 'yarn build && yarn changePermission' ./src",
     "changePermission": "chmod +x dist/lib/index.js",
     "test": "node src test --allowJs",
-    "lint": "node src lint --format codeFrame --project tsconfig.json",
-    "lint:fix": "yarn run lint --fix --allowJs",
+    "lint": "node src lint --format codeFrame --allowJs",
+    "lint:fix": "yarn run lint --fix",
     "commit": "node src precommit --allowJs"
   },
   "repository": "git@github.com:j-u-p-iter/jupiter-scripts.git",
