@@ -11,7 +11,7 @@
   },
   "scripts": {
     "tsnode": "ts-node -P ./src/config/tsconfig.json",
-    "build": "node src build --cli --allowJS",
+    "build": "node src build --cli --allowJs",
     "build:watch": "watch 'yarn build && yarn changePermission' ./src",
     "changePermission": "chmod +x dist/lib/index.js",
     "test": "node src test --allowJs",
