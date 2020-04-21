@@ -147,7 +147,6 @@ METHOD #3: Same as METHOD #2 above, but allows for modularized code
 
 
 # Third part of an article is in my phone notes.
-
 I should adapt this material to the context on NodeJS scripts.
 
 
