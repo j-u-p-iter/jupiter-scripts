@@ -10,7 +10,7 @@ const fs = require("fs");
 const path = require("path");
 const readPkgUp = require("read-pkg-up");
 const arrify = require("arrify");
-const { has, curry, get, keys, isArray } = require("lodash");
+const { has, curry, get, keys } = require("lodash");
 const which = require("which");
 const yargsParser = require("yargs-parser");
 const editJsonFile = require("edit-json-file");
@@ -86,7 +86,7 @@ const isEnvSet = name => {
 const withDefault = curry((defaultValue, data) => {
   let notEmpty = !!data;
 
-  if (isArray(data)) {
+  if (Array.isArray(data)) {
     notEmpty = !!data.length;
   }
 
