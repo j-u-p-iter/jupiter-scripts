@@ -198,9 +198,9 @@ const setupTSConfig = () => {
   config.set("include", [fromRoot("src")]);
   config.set(
     "exclude",
-    config
-      .get("exclude")
-      .map(excludePath => path.resolve(fromRoot("src"), excludePath))
+    ["coverage", "node_modules", "tests/**/*", "**/*.spec.ts"].map(
+      excludePath => path.join(fromRoot("src"), excludePath)
+    )
   );
   config.save();
 };
