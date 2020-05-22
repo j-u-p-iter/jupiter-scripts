@@ -25,9 +25,9 @@
     "/Users/j.u.p.iter/projects/jupiter-scripts/src"
   ],
   "exclude": [
-    "coverage",
-    "node_modules",
-    "tests/**/*",
-    "**/*.spec.ts"
+    "/Users/j.u.p.iter/projects/jupiter-scripts/src/coverage",
+    "/Users/j.u.p.iter/projects/jupiter-scripts/src/node_modules",
+    "/Users/j.u.p.iter/projects/jupiter-scripts/src/tests/**/*",
+    "/Users/j.u.p.iter/projects/jupiter-scripts/src/**/*.spec.ts"
   ]
 }

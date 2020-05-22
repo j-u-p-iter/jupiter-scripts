@@ -172,6 +172,7 @@ const getPathToBuiltinTSConfig = () =>
 // we setup (only if project doesn't have it's own config in the root foler):
 // - declaration dirs paths
 // - include paths
+// - exclude paths
 // - outDir paths
 // - allowJs flag
 const setupTSConfig = () => {
@@ -195,6 +196,12 @@ const setupTSConfig = () => {
 
   config.set("compilerOptions.outDir", fromRoot("dist/lib"));
   config.set("include", [fromRoot("src")]);
+  config.set(
+    "exclude",
+    config
+      .get("exclude")
+      .map(excludePath => path.resolve(fromRoot("src"), excludePath))
+  );
   config.save();
 };
 
