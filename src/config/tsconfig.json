@@ -26,6 +26,8 @@
   ],
   "exclude": [
     "coverage",
-    "node_modules"
+    "node_modules",
+    "tests/**/*",
+    "**/*.spec.ts"
   ]
 }
