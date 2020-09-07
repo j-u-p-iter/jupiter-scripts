@@ -26,7 +26,7 @@ const pathToLintStagedConfig = useBuiltInConfig
   ? ["--config", resolvePath(__dirname, "../config/lint-staged.config.js")]
   : [];
 
-const { signal } = spawn.sync(
+const { error, status, signal } = spawn.sync(
   resolveBin("lint-staged"),
   [...pathToLintStagedConfig, ...filterArgs(args, ["allowJs"])],
   {

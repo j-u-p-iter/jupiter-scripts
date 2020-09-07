@@ -31,7 +31,7 @@ const pathToTSConfig = useBuiltinTSConfig
   ? ["--project", resolvePath(__dirname, "../config/tsconfig.json")]
   : [];
 
-const { signal, status: statusResult } = spawn.sync(
+const { output, signal, status: statusResult } = spawn.sync(
   resolveBin("tslint"),
   [...pathToTSLintConfig, ...pathToTSConfig, ...filterArgs(args, ["allowJs"])],
   { stdio: "inherit" }
