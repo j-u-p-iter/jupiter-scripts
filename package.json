@@ -50,6 +50,9 @@
     "inquirer": "^7.1.0",
     "is-ci": "^1.2.1",
     "jest": "^23.6.0",
+    "jsdoc": "^3.6.5",
+    "jsdoc-fresh": "^1.0.2",
+    "jsdoc-to-markdown": "^6.0.1",
     "lint-staged": "^8.1.0",
     "lodash": "^4.17.15",
     "minimist": "^1.2.5",
@@ -80,6 +83,7 @@
     "yargs-parser": "^10.1.0"
   },
   "devDependencies": {
+    "@j.u.p.iter/execute-command": "^1.0.3",
     "copyfiles": "^2.2.0",
     "jest-in-case": "^1.0.2"
   }

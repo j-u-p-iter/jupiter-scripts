@@ -19,6 +19,7 @@ yargs
   .command("build", "build module")
   .command("test", "run tests")
   .command("lint", "lint code")
+  .command("docs", "create docs")
   .demandCommand(1, "Available commands: ...")
   .help().argv;
 
