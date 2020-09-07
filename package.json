@@ -80,7 +80,7 @@
     "typescript": "^3.8.3",
     "uuid": "^7.0.3",
     "which": "^1.3.1",
-    "yargs-parser": "^10.1.0"
+    "yargs-parser": "^13.1.2"
   },
   "devDependencies": {
     "@j.u.p.iter/execute-command": "^1.0.3",
