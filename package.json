@@ -33,7 +33,7 @@
     "@types/jest": "^23.3.10",
     "arrify": "^1.0.1",
     "await-to-js": "^2.1.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "browserslist": "^4.1.1",
     "chalk": "^4.0.0",
     "clear": "^0.1.0",
